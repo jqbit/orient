@@ -6,7 +6,7 @@ The repo this example describes does not exist; it is a representative shape. Tr
 
 ---
 
-```md
+````md
 # YORIENT.md
 
 ## Purpose
@@ -100,7 +100,7 @@ acme/
 - Run the drift check from the `yorient` skill quarterly or after large refactors.
 
 Last reviewed: 2026-05-25.
-```
+````
 
 ---
 

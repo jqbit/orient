@@ -1,0 +1,55 @@
+name: Feature request
+description: New agent ecosystem support, a new reference file, a behavior change, or a schema bump (v=2).
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Two common shapes:
+        - **New ecosystem** (a new agent/tool joining the Agent Adapter Targets table) — include a link to that tool's official docs for context files.
+        - **Schema bump** (introducing `v=2` for managed blocks) — explain why `v=1` is insufficient and what the upgrade path is.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of request
+      options:
+        - New ecosystem support
+        - New reference file
+        - Algorithm/schema change (managed block, drift check, smoke test)
+        - Documentation/clarity improvement
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What
+      description: One paragraph describing the proposed change.
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: What does this unlock? Who benefits? What breaks without it?
+    validations:
+      required: true
+
+  - type: textarea
+    id: links
+    attributes:
+      label: Reference links
+      description: Official docs for the agent/tool, prior-art issues, related discussions.
+    validations:
+      required: false
+
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: Trade-offs
+      description: What does this complicate, deprecate, or risk? Be honest.
+    validations:
+      required: false

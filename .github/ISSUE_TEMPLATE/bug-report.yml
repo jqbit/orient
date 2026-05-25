@@ -1,0 +1,53 @@
+name: Bug report
+description: Something in the skill body, a reference file, or an example is wrong, ambiguous, or broken.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. A few sentences plus a pointer to the exact file and line is usually enough.
+
+  - type: input
+    id: yorient-version
+    attributes:
+      label: yorient version
+      description: From `SKILL.md` frontmatter `version:` field, or the GitHub release tag you cloned.
+      placeholder: "v1.4.0"
+    validations:
+      required: true
+
+  - type: input
+    id: agent
+    attributes:
+      label: Agent ecosystem affected
+      description: Claude Code, Codex, Cursor, Gemini, Hermes, OpenCode, Pi, Factory/Droid, Copilot, or "n/a".
+      placeholder: "Claude Code"
+    validations:
+      required: false
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What's wrong
+      description: What you expected vs. what the skill body or example actually says/does. Include file path and line number if you can.
+      placeholder: |
+        e.g. `SKILL.md` line 197 says "append at end" but `## Thin Adapter Shape § Placement Rule` says "insert under H1" — these contradict for new files containing only a heading.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction (if applicable)
+      description: Minimal steps showing the issue. Paste the input file and the resulting output.
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested fix (optional)
+      description: If you already see the right answer, share it. Otherwise leave blank.
+    validations:
+      required: false

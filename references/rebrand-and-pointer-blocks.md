@@ -29,16 +29,45 @@ grep -rnE '\b(ORIENT\.md|orient-map|yourient|YOURIENT(\.md)?)\b' . \
   --exclude-dir=.git --exclude-dir=node_modules
 ```
 
-Find legacy unversioned managed blocks that need upgrading:
+Find all managed blocks (any version, any whitespace, with or without `v=N`):
 
 ```sh
-grep -rnE '<!--\s*YORIENT(-README)?:(BEGIN|END)(\s*-->)' . \
+grep -rnE '<!--[[:space:]]*YORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)([[:space:]]+v[[:space:]]*=[[:space:]]*[0-9]+)?[[:space:]]*-->' . \
   --include='*.md' \
   --include='AGENTS.md' --include='CLAUDE.md' --include='GEMINI.md' --include='README.md' \
-  --exclude-dir=.git
+  --exclude-dir=.git --exclude-dir=node_modules
 ```
 
-A match without `v=N` is a legacy `v=0` block and should be upgraded in place per the managed-block algorithm in `SKILL.md`.
+This permissive opener-detector matches all of the following variants and is portable across GNU grep, BSD grep, and `ripgrep`:
+
+- `<!-- YORIENT:BEGIN -->` (legacy unversioned)
+- `<!-- YORIENT:BEGIN v=1 -->` (current)
+- `<!-- YORIENT-README:BEGIN v=42 -->` (future versions)
+- `<!--  YORIENT : BEGIN  -->` (loose whitespace around `:`)
+- `<!-- YORIENT : BEGIN v = 1 -->` (loose whitespace around `=`)
+- `<!--YORIENT:END-->` (no internal whitespace)
+
+To narrow to only **legacy unversioned** (`v=0`) blocks that need upgrading:
+
+```sh
+grep -rnE '<!--[[:space:]]*YORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)[[:space:]]*-->' . \
+  --include='*.md' \
+  --include='AGENTS.md' --include='CLAUDE.md' --include='GEMINI.md' --include='README.md' \
+  --exclude-dir=.git --exclude-dir=node_modules
+```
+
+To extract the version attribute from a matched line for upgrade decisions, post-process with a second pass:
+
+```sh
+sed -nE 's/.*YORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)[[:space:]]+v[[:space:]]*=[[:space:]]*([0-9]+).*/\3/p'
+```
+
+### Edge cases worth knowing
+
+- **CRLF line endings.** `grep` matches per logical line regardless of `\n` vs `\r\n`. Detection works under either convention; the managed-block algorithm in `SKILL.md` preserves the file's existing line-ending convention when writing.
+- **UTF-8 BOM at file start.** GNU `grep` skips the BOM on line 1; BSD `grep` treats it as part of the line, which can make a `^` anchor fail. The detection regexes above do not use `^`, so they match in both. The write side (the managed-block algorithm) preserves the BOM byte-for-byte.
+- **Anchors split across lines.** If a `BEGIN` or `END` marker is wrapped across two lines (rare; only happens with hand-edited HTML), detection misses it. The managed-block algorithm treats this as malformed input and refuses to write. Repair the marker manually before re-running.
+- **Multiple block families on one line.** Not supported. Each managed block occupies its own full line.
 
 ## Migration decision tree
 

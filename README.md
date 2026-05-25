@@ -1,20 +1,27 @@
 # yorient
 
-A pure-Markdown orientation layer for AI coding agents.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Release](https://img.shields.io/github/v/release/jqbit/yorient)](https://github.com/jqbit/yorient/releases)
+[![checks](https://github.com/jqbit/yorient/actions/workflows/checks.yml/badge.svg)](https://github.com/jqbit/yorient/actions/workflows/checks.yml)
+[![CHANGELOG](https://img.shields.io/badge/CHANGELOG-md-informational)](./CHANGELOG.md)
+[![Stars](https://img.shields.io/github/stars/jqbit/yorient?style=social)](https://github.com/jqbit/yorient/stargazers)
 
-`yorient` creates a single canonical map file — `YORIENT.md` — at the root of any repository, monorepo, docs tree, or Obsidian vault. Thin pointer blocks in `README.md`, `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` route both humans and agents to it. No scripts. No generated code. Just Markdown and managed pointer blocks that survive across agent ecosystems.
+A Markdown orientation map for AI coding agents — drop one `YORIENT.md` at the root of any repository, monorepo, docs tree, or Obsidian vault and let every agent read from the same source of truth. Thin pointer blocks in `README.md`, [`AGENTS.md`](https://agents.md), `CLAUDE.md`, and `GEMINI.md` route Claude Code, Codex, Cursor, Gemini, Copilot, and every other `AGENTS.md`-compatible agent to that map.
+
+No scripts. No generated code. Just Markdown and idempotent, versioned managed blocks that survive across agent ecosystems.
 
 ## What it does
 
 - Drops a lean `YORIENT.md` at the root (or any subtree) — purpose, tree map, routing table, commands, no-go zones, drift stamp.
-- Adds a thin `<!-- YORIENT:BEGIN v=1 -->` block to your agent-facing files so Claude Code, Codex, Cursor, Hermes, Gemini/Antigravity, OpenCode, Pi, Factory/Droid, and GitHub Copilot all read from the same source of truth.
-- Adds a `<!-- YORIENT-README:BEGIN v=1 -->` block to `README.md` so contributors get the same routing humans need.
+- Adds a thin `<!-- YORIENT:BEGIN v=1 -->` block to your agent-facing files so Claude Code, Codex, Cursor, Hermes, Gemini/Antigravity, OpenCode, Pi, Factory/Droid, GitHub Copilot, and other `AGENTS.md`-compatible tools all read from the same source of truth.
+- Adds a `<!-- YORIENT-README:BEGIN v=1 -->` block to `README.md` so human contributors get the same routing.
+- Works on Obsidian-style vaults too: `YORIENT.md` plus MOC notes; no folder reorganization required.
 - Idempotent: re-running the skill on an unchanged repo produces a byte-identical result.
-- Versioned managed blocks (`v=1`) so future iterations can upgrade without trampling user content.
+- Versioned managed blocks (`v=1`) so future iterations can upgrade in place without trampling user content.
 
 ## Why
 
-Agents waste enormous time on blind discovery: globbing, grepping, opening files to figure out where the build script lives. A two-minute read of a well-maintained `YORIENT.md` collapses that to near-zero. The pointer blocks make sure every agent — regardless of which `*.md` convention it reads — gets the same routing.
+Agents waste enormous time on blind discovery: globbing, grepping, opening files to figure out where the build script lives. A two-minute read of a well-maintained `YORIENT.md` collapses that to near-zero. The pointer blocks make sure every agent — regardless of which `*.md` convention it reads — gets the same routing, and the managed-block algorithm guarantees re-running the skill never corrupts user content.
 
 ## Install
 
@@ -65,7 +72,7 @@ scripts or non-Markdown helper files.
 
 For a typical repo, `yorient` produces:
 
-```
+```text
 YORIENT.md                   # canonical map (purpose, tree, routing, commands, no-go, drift stamp)
 README.md                    # gains a managed YORIENT-README:BEGIN block pointing to YORIENT.md
 AGENTS.md                    # gains a managed YORIENT:BEGIN block (generic + Codex + Hermes + OpenCode + Copilot)
@@ -95,8 +102,16 @@ Existing content in those files is preserved. New runs of `yorient` only touch t
 
 ## Status
 
-`v1.3.0` — first public release. See [`CHANGELOG.md`](./CHANGELOG.md).
+`v1.4.0` — post-release audit closing 8 high-value findings: algorithm/placement reconciliation, hardened detection regex, ecosystem-claim corrections, [`agents.md`](https://agents.md) citation, community scaffolding, dogfood (this repo demonstrates the skill on itself), CI safety net, README polish. See [`CHANGELOG.md`](./CHANGELOG.md).
 
 ## License
 
 MIT. See [`LICENSE`](./LICENSE).
+
+<!-- YORIENT-README:BEGIN v=1 -->
+## Repo Map
+
+For structure, routing, and agent guidance, read [`YORIENT.md`](./YORIENT.md).
+
+Agents and contributors should consult `YORIENT.md` before broad repo exploration or large refactors.
+<!-- YORIENT-README:END v=1 -->

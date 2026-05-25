@@ -1,7 +1,7 @@
 ---
 name: yorient
 description: "Use when creating or updating a pure-Markdown orientation layer: lean YORIENT.md maps, thin README/AGENTS.md/CLAUDE.md/GEMINI.md pointers, Obsidian MOCs, and parallel read-only subtree exploration reports. No scripts or generated code required."
-version: 1.3.0
+version: 1.4.0
 author: Hermes Agent + user
 license: MIT
 metadata:
@@ -73,6 +73,8 @@ Use uppercase `YORIENT.md` consistently. If a project already has `ORIENT.md`, `
 
 ## Agent Adapter Targets
 
+The cross-tool baseline is [`AGENTS.md`](https://agents.md) — an open convention adopted by OpenAI Codex, Cursor, GitHub Copilot, Gemini, Aider, Windsurf, Zed, Factory/Droid, and others. Yorient layers atop it: `YORIENT.md` holds the canonical map; `AGENTS.md` and any tool-specific adapter files (`CLAUDE.md`, `GEMINI.md`) point to that map. The skill does not replace `AGENTS.md`; it gives it something concrete to link to.
+
 Ask the user which agents to target if they did not specify. If they do not answer, default to portable files only: `YORIENT.md` + `README.md` + `AGENTS.md`.
 
 | Target | Project file(s) | Notes |
@@ -83,13 +85,17 @@ Ask the user which agents to target if they did not specify. If they do not answ
 | Hermes | `AGENTS.md` | Hermes loads project context files from workdir. Keep canonical guidance in `YORIENT.md`. |
 | Claude Code | `CLAUDE.md` | Add a short orientation block pointing to `YORIENT.md`. |
 | Gemini CLI / Antigravity | `GEMINI.md` | Add a short orientation block pointing to `YORIENT.md`. |
-| Cursor CLI | `AGENTS.md` | Cursor CLI reads project context files. |
-| Cursor IDE | `.cursor/rules/*.mdc` | Only if user explicitly requests IDE rule files; otherwise use `AGENTS.md`. |
+| Cursor | `AGENTS.md` | Cursor reads `AGENTS.md` from the project root. For IDE-specific rule pinning, see Cursor's `.cursor/rules/*.mdc` docs; do not invent rules files without an explicit user request. |
 | GitHub Copilot coding agent | `AGENTS.md` | Keep repo-scoped operational instructions here. |
 | OpenCode | `AGENTS.md` | Use the generic adapter unless user has a tool-specific convention. |
 | Pi | `AGENTS.md` or `CLAUDE.md` | Project context is safest. Global Pi setup requires separate confirmation. |
 | Factory/Droid | `AGENTS.md` | Use project/home `AGENTS.md`; do not invent `.droid/*`. |
 | Obsidian/vault | `YORIENT.md`, `INDEX.md`, MOC notes | Prefer existing MOC folder if present. |
+
+### Notes on the above
+
+- **`CLAUDE.md` is a community convention, not an Anthropic-blessed schema.** Claude Code reads it as project context; it is not the same as the official `SKILL.md` skill format. Treat it as a thin adapter that points to `YORIENT.md`, not as a place for canonical guidance.
+- **`GEMINI.md` global-config conflict.** Both Gemini CLI and Antigravity read from the same global `~/.gemini/GEMINI.md`. Project-level `GEMINI.md` in a repo is fine and unambiguous; just be aware that edits to the *global* file affect both tools at once.
 
 ## YORIENT.md Shape
 
@@ -162,10 +168,13 @@ Use this block shape in `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and similar adapt
 
 ### Placement Rule
 
-- New file or file containing only a heading: insert the block under the first H1, preceded by one blank line.
-- Existing file with hand-written content: append the block at the end of the file, with one blank line above and one below.
+These are the high-level rules; the exact byte-level steps live in `## Managed Block Algorithm`.
+
+- Empty file or file containing only whitespace: write the block at the top.
+- File whose first non-blank line is an H1 (`# `): insert the block immediately after that H1, separated by one blank line above and below.
+- Any other existing file with hand-written content: append the block at the end of the file, with one blank line above and a trailing newline at file end.
 - Never split or interleave existing user content with the block.
-- If a managed block already exists, replace it in place (see `## Managed Block Algorithm`) — do not move it.
+- If a managed block already exists, replace it in place — do not move it.
 
 ## README Pointer Shape
 
@@ -185,19 +194,37 @@ If the map lives outside the same directory, change the link to the correct rela
 
 ## Managed Block Algorithm
 
-The exact rule for inserting, updating, and de-duplicating managed blocks. Re-running the algorithm on an unchanged file must produce a byte-identical result (idempotency).
+The exact byte-level rule for inserting, updating, and de-duplicating managed blocks. Re-running the algorithm on an unchanged file must produce a byte-identical result (idempotency).
 
 For each target file (e.g., `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `README.md`):
 
-1. Read the file (or treat as empty if it does not exist and the user asked to create it).
-2. Locate all `<!-- YORIENT:BEGIN` anchors (or `<!-- YORIENT-README:BEGIN` for `README.md`). Capture the optional `v=N` attribute per occurrence; missing attribute means `v=0`.
-3. Decide based on count:
-   - **Zero blocks found:** append the new block at the end of the file. If the file has content and does not end with a blank line, insert one blank line first.
-   - **Exactly one block found:** replace from the `BEGIN` line through the matching `END` line with the new block at the current schema version. Leave surrounding lines unchanged.
-   - **Two or more blocks found:** keep the first; delete from the second `BEGIN` line through its matching `END` line for each duplicate; then upgrade the surviving block per the single-block rule.
-4. Match `BEGIN`/`END` by anchor name only (`YORIENT` or `YORIENT-README`), not by version attribute. Version is informational for upgrade detection; both `v=0` (unversioned legacy) and `v=N` blocks are treated as the same anchor family.
-5. Forward-compatibility: if a found block has `v=M` where `M` is greater than this skill's current schema version, leave it untouched and report it — do not downgrade.
-6. After write, verify: re-running step 2 against the new file must return exactly one block at the current schema version.
+1. **Preflight.** Read the file (or treat as empty if it does not exist and the user asked to create it). Before parsing, capture three byte-level properties so they can be preserved on write:
+   - **BOM:** if the file starts with a UTF-8 byte-order-mark (`0xEF 0xBB 0xBF`), preserve it.
+   - **Line ending:** if any line ends in `\r\n`, treat the file as CRLF; otherwise LF. Empty files default to LF. Any block content written must match the file's convention.
+   - **Trailing newline:** record whether the file ends with a newline; preserve that on write.
+
+2. **Locate** all opening anchors — `<!-- YORIENT:BEGIN` for adapter files, `<!-- YORIENT-README:BEGIN` for `README.md`. For each opener, find its closing anchor (`YORIENT:END` / `YORIENT-README:END`). Capture the optional `v=N` attribute per occurrence; a missing attribute means `v=0`.
+
+3. **Malformed input.** If any opener lacks a matching closer (or vice versa), or if openers/closers interleave across families, abort the write with a clear error and leave the file untouched. Do not attempt a guess or silent repair.
+
+4. **Decide based on the count of well-formed blocks for this anchor family:**
+
+   - **Zero blocks found** — place a new block, picking the location by file shape (matches `## Thin Adapter Shape § Placement Rule`):
+     - File is empty or whitespace-only: write the block at the top.
+     - File's first non-blank line is an H1 (`# `): insert the block immediately after that line, separated by one blank line above and one blank line below.
+     - Otherwise: append at end. Ensure exactly one blank line above the block and a trailing newline at file end.
+
+   - **Exactly one block found:** replace from the `BEGIN` line through the matching `END` line with the new block at the current schema version. Leave surrounding lines unchanged. Do not adjust blank-line spacing outside the block.
+
+   - **Two or more blocks found:** keep the first; delete each subsequent `BEGIN`-through-matching-`END` range (including any blank line immediately following the removed block); then upgrade the surviving block per the single-block rule.
+
+5. **Anchor matching** is by family name only (`YORIENT` or `YORIENT-README`), case-sensitive on the family, version-agnostic. `v=0` (unversioned legacy) and `v=N` blocks are the same family and interchangeable on detection; the new block always writes at the current schema version.
+
+6. **Forward-compatibility.** If a found block carries `v=M` where `M` is greater than this skill's current schema version, leave it untouched and report it — do not downgrade.
+
+7. **Write.** Emit the result using the captured BOM, line-ending convention, and trailing-newline behavior. Do not normalize, re-encode, or strip whitespace outside the block being inserted or replaced.
+
+8. **Idempotency check.** Re-running step 2 against the freshly written file must return exactly one block at the current schema version. If not, the write produced unexpected duplication and must be reverted.
 
 This algorithm applies symmetrically to the README pointer block, with `YORIENT-README` as the anchor family.
 
