@@ -12,7 +12,7 @@ also uses the skill on itself.
 - Want to install the skill into your agents? `README.md § Install`.
 - Want to extend or modify the skill? `.github/CONTRIBUTING.md`, then `SKILL.md`.
 - Want a worked example of a `ORIENT.md`? `references/example-ORIENT.md`.
-- Want to migrate from `yorient`, `YORIENT.md`, or `orient-map`? `references/rebrand-and-pointer-blocks.md`.
+- Want to migrate from `orient-map` or legacy pointer blocks? `references/rebrand-and-pointer-blocks.md`.
 - Tracking releases? `CHANGELOG.md`.
 
 ## Tree Map

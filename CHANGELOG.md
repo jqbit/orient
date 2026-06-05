@@ -4,7 +4,7 @@ All notable changes to `orient` are documented here. This project follows [Seman
 
 ## [1.5.0] — 2026-06-05
 
-Full rebrand from `yorient` / `YORIENT.md` to `orient` / `ORIENT.md`. Canonical managed-block anchors are `ORIENT` and `ORIENT-README`; legacy `YORIENT` families are detected and upgraded in place. GitHub URLs point at `jqbit/orient`.
+Canonical `orient` branding: `ORIENT.md`, `ORIENT` / `ORIENT-README` managed blocks, `jqbit/orient` URLs. Pre-1.5 pointer blocks and map filenames upgrade in place.
 
 ## [1.4.0] — 2026-05-25
 

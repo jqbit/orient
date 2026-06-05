@@ -30,7 +30,7 @@ Use this skill when the user asks to:
 - Create cross-agent orientation files for Claude Code, Codex, Gemini, Cursor, Hermes, OpenCode, Copilot, Pi, Factory/Droid, or generic agents.
 - Build a "where to look for what" map for a monorepo, docs site, knowledge base, or Obsidian vault.
 - Parallelize repository discovery using read-only subagents and synthesize their reports.
-- Rebrand older `orient-map`, `yorient`, `YORIENT.md`, or `yourient` conventions to `orient` + `ORIENT.md`.
+- Rebrand older `orient-map` or `yourient` conventions to `orient` + `ORIENT.md`.
 
 Do not use for full implementation plans, detailed architecture docs, generated API references, or exhaustive code packing. Use external repo-map tools only if the user asks.
 
@@ -50,7 +50,7 @@ Use this branding consistently:
 - Adapter block markers: `<!-- ORIENT:BEGIN v=1 -->` / `<!-- ORIENT:END v=1 -->`
 - README block markers: `<!-- ORIENT-README:BEGIN v=1 -->` / `<!-- ORIENT-README:END v=1 -->`
 
-Do **not** emit `yourient`, `YOURIENT`, `yorient`, `YORIENT.md`, or `orient-map` as active branding.
+Do **not** emit `yourient`, `YOURIENT`, or `orient-map` as active branding.
 
 Reference: `references/rebrand-and-pointer-blocks.md` contains the exact full-rebrand checklist plus the managed README and adapter block shapes.
 
@@ -69,7 +69,7 @@ GEMINI.md                   # Gemini/Antigravity adapter
 <subtree>/AGENTS.md         # optional local adapter when nearest-file precedence helps
 ```
 
-Use uppercase `ORIENT.md` consistently. If a project already has `YORIENT.md`, `yorient`, `orient.md`, or `orientation.md`, follow the migration procedure in `references/rebrand-and-pointer-blocks.md`.
+Use uppercase `ORIENT.md` consistently. If a project already has `orient.md`, `orientation.md`, or pre-1.5 map files, follow the migration procedure in `references/rebrand-and-pointer-blocks.md`.
 
 ## Agent Adapter Targets
 
@@ -218,7 +218,7 @@ For each target file (e.g., `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `README.md`):
 
    - **Two or more blocks found:** keep the first; delete each subsequent `BEGIN`-through-matching-`END` range (including any blank line immediately following the removed block); then upgrade the surviving block per the single-block rule.
 
-5. **Anchor matching** is by family name only (`ORIENT` or `ORIENT-README`), case-sensitive on the family, version-agnostic. Legacy `YORIENT` / `YORIENT-README` blocks count as the same family and are rewritten to `ORIENT` / `ORIENT-README` at the current schema version. `v=0` (unversioned) and `v=N` blocks are interchangeable on detection.
+5. **Anchor matching** is by family name only (`ORIENT` or `ORIENT-README`), case-sensitive on the family, version-agnostic. Pre-1.5 blocks whose anchor family is the same name with a leading `Y` count as the same family and are rewritten to `ORIENT` / `ORIENT-README` at the current schema version. `v=0` (unversioned) and `v=N` blocks are interchangeable on detection.
 
 6. **Forward-compatibility.** If a found block carries `v=M` where `M` is greater than this skill's current schema version, leave it untouched and report it — do not downgrade.
 
@@ -255,7 +255,7 @@ Do not hardcode root-level links when a nearer nested `ORIENT.md` exists.
 Before writing anything:
 1. Identify root path and whether it is a git repo, docs tree, or vault.
 2. Ask one concise question if target agents are unknown: "Which agents should I emit adapters for?"
-3. Discover existing orientation/context files: `ORIENT.md`, `README.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules`, MOC/INDEX folders, plus any legacy `YORIENT.md`, `yorient`, or `orient-map` variants.
+3. Discover existing orientation/context files: `ORIENT.md`, `README.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules`, MOC/INDEX folders, plus any legacy `orient-map` or obsolete map-filename variants.
 4. Check git status when inside a git repo.
 5. Do not overwrite user-written context. Patch managed blocks or add new lean files.
 6. Exclude vendor/generated/cache directories from exploration: `.git`, `node_modules`, `.venv`, `dist`, `build`, `coverage`, `.next`, `.turbo`, `target`, `vendor`, binary assets, lockfile-only paths.

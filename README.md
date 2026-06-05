@@ -102,7 +102,7 @@ Existing content in those files is preserved. New runs of `orient` only touch th
 
 ## Status
 
-`v1.5.0` — full `orient` rebrand: `ORIENT.md`, `ORIENT` / `ORIENT-README` managed blocks, `jqbit/orient` URLs. See [`CHANGELOG.md`](./CHANGELOG.md).
+`v1.5.0` — `ORIENT.md`, `ORIENT` / `ORIENT-README` managed blocks. See [`CHANGELOG.md`](./CHANGELOG.md).
 
 ## License
 

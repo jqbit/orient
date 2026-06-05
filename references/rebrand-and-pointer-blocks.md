@@ -1,6 +1,6 @@
 # Orient Rebrand + Pointer Blocks
 
-Use this reference when migrating an existing orientation setup (legacy `orient-map`, `yorient`, `YORIENT.md`, `yourient`, or lowercase `orient.md`) to the canonical `orient` branding, or when adding pointer blocks to a fresh project.
+Use this reference when migrating an existing orientation setup (legacy `orient-map`, `yourient`, or lowercase `orient.md`) to the canonical `orient` branding, or when adding pointer blocks to a fresh project.
 
 ## Canonical spellings
 
@@ -12,27 +12,29 @@ Use this reference when migrating an existing orientation setup (legacy `orient-
 
 ## Detection
 
-Inside the target repo or vault, list legacy map files:
+Inside the target repo or vault, list map files (including obsolete spellings):
 
 ```sh
 find . -maxdepth 4 -type f \
-  \( -iname 'ORIENT.md' -o -iname 'YORIENT.md' -o -iname 'orient.md' -o -iname 'orientation.md' \) \
+  \( -iname 'ORIENT.md' -o -iname 'orient.md' -o -iname 'orientation.md' \) \
+  -not -path '*/.git/*' -not -path '*/node_modules/*'
+find . -maxdepth 4 -type f -iname 'Y*RIENT.md' \
   -not -path '*/.git/*' -not -path '*/node_modules/*'
 ```
 
 Scan for stale references in committed Markdown:
 
 ```sh
-grep -rnE '\b(YORIENT\.md|yorient|orient-map|yourient|YOURIENT(\.md)?)\b' . \
+grep -rnE '\b(orient-map|yourient|YOURIENT(\.md)?)\b' . \
   --include='*.md' \
   --include='AGENTS.md' --include='CLAUDE.md' --include='GEMINI.md' --include='README.md' \
   --exclude-dir=.git --exclude-dir=node_modules
 ```
 
-Find all managed blocks (any version, any whitespace, with or without `v=N`):
+Find all managed blocks (any version, any whitespace, with or without `v=N`). The `Y?` prefix matches both current and pre-1.5 anchor families:
 
 ```sh
-grep -rnE '<!--[[:space:]]*ORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)([[:space:]]+v[[:space:]]*=[[:space:]]*[0-9]+)?[[:space:]]*-->' . \
+grep -rnE '<!--[[:space:]]*Y?ORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)([[:space:]]+v[[:space:]]*=[[:space:]]*[0-9]+)?[[:space:]]*-->' . \
   --include='*.md' \
   --include='AGENTS.md' --include='CLAUDE.md' --include='GEMINI.md' --include='README.md' \
   --exclude-dir=.git --exclude-dir=node_modules
@@ -47,12 +49,12 @@ This permissive opener-detector matches all of the following variants and is por
 - `<!-- ORIENT : BEGIN v = 1 -->` (loose whitespace around `=`)
 - `<!--ORIENT:END-->` (no internal whitespace)
 
-Legacy `YORIENT` / `YORIENT-README` blocks (pre-1.5.0) use the same pattern with `YORIENT` instead of `ORIENT`; treat them as the same family and rewrite to `ORIENT` / `ORIENT-README` on the next skill run.
+Pre-1.5.0 managed blocks used the same shape with an extra leading `Y` on the anchor family name; treat them as one family and rewrite to `ORIENT` / `ORIENT-README` on the next skill run.
 
 To narrow to only **legacy unversioned** (`v=0`) blocks that need upgrading:
 
 ```sh
-grep -rnE '<!--[[:space:]]*ORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)[[:space:]]*-->' . \
+grep -rnE '<!--[[:space:]]*Y?ORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)[[:space:]]*-->' . \
   --include='*.md' \
   --include='AGENTS.md' --include='CLAUDE.md' --include='GEMINI.md' --include='README.md' \
   --exclude-dir=.git --exclude-dir=node_modules
@@ -61,7 +63,7 @@ grep -rnE '<!--[[:space:]]*ORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)[
 To extract the version attribute from a matched line for upgrade decisions, post-process with a second pass:
 
 ```sh
-sed -nE 's/.*ORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)[[:space:]]+v[[:space:]]*=[[:space:]]*([0-9]+).*/\3/p'
+sed -nE 's/.*Y?ORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)[[:space:]]+v[[:space:]]*=[[:space:]]*([0-9]+).*/\3/p'
 ```
 
 ### Edge cases worth knowing
@@ -75,14 +77,14 @@ sed -nE 's/.*ORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)[[:space:]]+v[[
 
 After detection, decide per file:
 
-1. **Only `YORIENT.md` (or `yorient` skill mirrors) present, no `ORIENT.md`:**
-   - Inside a git repo: `git mv YORIENT.md ORIENT.md`.
-   - Outside git: `mv YORIENT.md ORIENT.md`.
-   - Update internal anchors and link text inside the file from `YORIENT` / `YORIENT-README` to `ORIENT` / `ORIENT-README`.
+1. **Obsolete Y-prefixed map file present, no `ORIENT.md`:**
+   - Inside a git repo: rename it to `ORIENT.md` (`git mv` the file whose basename matches `Y*RIENT.md`).
+   - Outside git: `mv` to `ORIENT.md`.
+   - Update internal anchors and link text to `ORIENT` / `ORIENT-README`.
 
-2. **Both `YORIENT.md` and `ORIENT.md` present:**
+2. **Both obsolete map file and `ORIENT.md` present:**
    - `ORIENT.md` is canonical.
-   - Reduce `YORIENT.md` to a single redirect line: `See [ORIENT.md](./ORIENT.md).`
+   - Reduce the obsolete file to a single redirect line: `See [ORIENT.md](./ORIENT.md).`
    - Or delete it outright if no external links point at it.
 
 3. **Only lowercase `orient.md` or `orientation.md` (no uppercase `ORIENT.md`):**
@@ -97,16 +99,15 @@ For each Markdown file that the detection scans surfaced, apply these literal st
 
 | From | To |
 |---|---|
-| `YORIENT.md` | `ORIENT.md` |
-| `yorient` | `orient` |
-| `YORIENT` (adapter anchor family) | `ORIENT` |
-| `YORIENT-README` | `ORIENT-README` |
 | `orient-map` | `orient` |
 | `yourient` | `orient` |
 | `YOURIENT.md` | `ORIENT.md` |
 | `YOURIENT` (as bare word) | `ORIENT` |
-| `/yorient` (slash-command) | `/orient` |
 | `/orient-map` (slash-command) | `/orient` |
+| Pre-1.5 map filename (`Y*RIENT.md`) | `ORIENT.md` |
+| Pre-1.5 adapter anchor family | `ORIENT` |
+| Pre-1.5 README anchor family | `ORIENT-README` |
+| Pre-1.5 skill directory / slash command | `orient` / `/orient` |
 
 Preserve any intentional legacy mention inside migration docs (such as this file). Do not blanket-replace inside `references/rebrand-and-pointer-blocks.md` itself.
 
@@ -146,12 +147,12 @@ When migrating a project end-to-end:
 
 1. Rename skill frontmatter `name:` to `orient` in every skill mirror.
 2. Rename on-disk skill directory to `orient` in every mirrored agent skill tree.
-3. Replace `YORIENT.md` / `yorient` references in the skill body with `ORIENT.md` / `orient`.
+3. Replace obsolete map filenames and skill-directory names with `ORIENT.md` / `orient`.
 4. Add or update the managed README pointer block at `v=1`.
 5. Add or update managed adapter blocks at `v=1` in `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` per the algorithm in `SKILL.md` (`## Managed Block Algorithm`).
 6. Sync the whole skill package across mirrors — copy `references/`, `templates/`, and `scripts/` too when present.
 7. Preserve all non-managed file content.
-8. Remove stale mirrored `yorient`, `yourient`, or `orient-map` directories so there is only one callable slug per ecosystem.
+8. Remove stale mirrored `yourient` or `orient-map` directories so there is only one callable slug per ecosystem.
 9. If the Hermes local skill had an older telemetry key (`~/.hermes/skills/.usage.json`), migrate it to `orient`.
 
 ## Relative-link rule

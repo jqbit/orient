@@ -1,4 +1,4 @@
-# Normalize line endings: text files use LF in the repo, native on checkout.
+# orient — normalize line endings: LF in repo, native on checkout.
 * text=auto eol=lf
 
 # Markdown is the project's primary language; make sure GitHub renders it
