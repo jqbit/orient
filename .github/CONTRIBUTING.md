@@ -51,3 +51,4 @@ Contribution to this project is governed by [`CODE_OF_CONDUCT.md`](./CODE_OF_CON
 ## License
 
 By submitting a contribution you agree it is licensed under the same MIT terms as the rest of the project. See [`LICENSE`](../LICENSE).
+

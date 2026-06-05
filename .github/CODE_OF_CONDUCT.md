@@ -13,3 +13,4 @@ This Code of Conduct applies to all project spaces — issues, pull requests, di
 Report violations by opening a private security advisory on GitHub (see [`SECURITY.md`](./SECURITY.md) for the link), or by emailing the maintainer at the address listed there. Reports are reviewed in confidence; please include enough context to identify what happened and any links to the relevant content.
 
 For the full text of the rules, expected behaviors, and enforcement guidelines, read the linked [Contributor Covenant 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/) page.
+

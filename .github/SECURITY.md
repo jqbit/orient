@@ -31,3 +31,4 @@ The latest `v1.x` release receives fixes. Older majors are not supported.
 - Reports about an agent ecosystem's own behavior unrelated to this skill.
 - Reports about user-authored `ORIENT.md` content in third-party repos.
 - Reports about commercial support, downtime, or service-level concerns — this is an unstaffed open-source project.
+
