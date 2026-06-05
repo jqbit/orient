@@ -8,11 +8,11 @@ body:
         Thanks for taking the time to file a bug. A few sentences plus a pointer to the exact file and line is usually enough.
 
   - type: input
-    id: yorient-version
+    id: orient-version
     attributes:
-      label: yorient version
+      label: orient version
       description: From `SKILL.md` frontmatter `version:` field, or the GitHub release tag you cloned.
-      placeholder: "v1.4.0"
+      placeholder: "v1.5.0"
     validations:
       required: true
 

@@ -1,7 +1,7 @@
 ---
-name: yorient
-description: "Use when creating or updating a pure-Markdown orientation layer: lean YORIENT.md maps, thin README/AGENTS.md/CLAUDE.md/GEMINI.md pointers, Obsidian MOCs, and parallel read-only subtree exploration reports. No scripts or generated code required."
-version: 1.4.0
+name: orient
+description: "Use when creating or updating a pure-Markdown orientation layer: lean ORIENT.md maps, thin README/AGENTS.md/CLAUDE.md/GEMINI.md pointers, Obsidian MOCs, and parallel read-only subtree exploration reports. No scripts or generated code required."
+version: 1.5.0
 author: Hermes Agent + user
 license: MIT
 metadata:
@@ -10,13 +10,13 @@ metadata:
     related_skills: [subagent-driven-development, cross-agent-skill-installation, agent-prompt-pack-maintenance]
 ---
 
-# Yorient
+# Orient
 
 ## Overview
 
 Create a lean, text-only orientation layer for a repository, documentation tree, or Obsidian-style vault so future agents do less blind discovery before they act.
 
-The canonical file is `YORIENT.md`: a compact Markdown map of where things live, what to read first, what commands matter, and what areas are risky or off-limits. Agent-facing files such as `README.md`, `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` should stay thin and point readers to `YORIENT.md`.
+The canonical file is `ORIENT.md`: a compact Markdown map of where things live, what to read first, what commands matter, and what areas are risky or off-limits. Agent-facing files such as `README.md`, `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` should stay thin and point readers to `ORIENT.md`.
 
 Core principle: **map first, details on demand**. Do not dump the repo into instructions. Give routing hints, entrypoints, ownership boundaries, and search/read recipes.
 
@@ -25,12 +25,12 @@ Hard constraint: **do not create scripts, Python files, generated CLIs, or non-M
 ## When to Use
 
 Use this skill when the user asks to:
-- Set up `YORIENT.md`, `README.md` map pointers, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, MOCs, repo maps, or agent-facing context files.
+- Set up `ORIENT.md`, `README.md` map pointers, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, MOCs, repo maps, or agent-facing context files.
 - Reduce agent time spent exploring a large codebase or vault.
 - Create cross-agent orientation files for Claude Code, Codex, Gemini, Cursor, Hermes, OpenCode, Copilot, Pi, Factory/Droid, or generic agents.
 - Build a "where to look for what" map for a monorepo, docs site, knowledge base, or Obsidian vault.
 - Parallelize repository discovery using read-only subagents and synthesize their reports.
-- Rebrand older `orient-map` or `ORIENT.md` conventions to `yorient` + `YORIENT.md`.
+- Rebrand older `orient-map`, `yorient`, `YORIENT.md`, or `yourient` conventions to `orient` + `ORIENT.md`.
 
 Do not use for full implementation plans, detailed architecture docs, generated API references, or exhaustive code packing. Use external repo-map tools only if the user asks.
 
@@ -44,13 +44,13 @@ The callable slug comes from `SKILL.md` frontmatter `name:`, not the directory n
 
 Use this branding consistently:
 
-- Skill / slash-command name: `yorient`
-- Canonical file name: `YORIENT.md`
-- Nested map files: `<subtree>/YORIENT.md`
-- Adapter block markers: `<!-- YORIENT:BEGIN v=1 -->` / `<!-- YORIENT:END v=1 -->`
-- README block markers: `<!-- YORIENT-README:BEGIN v=1 -->` / `<!-- YORIENT-README:END v=1 -->`
+- Skill / slash-command name: `orient`
+- Canonical file name: `ORIENT.md`
+- Nested map files: `<subtree>/ORIENT.md`
+- Adapter block markers: `<!-- ORIENT:BEGIN v=1 -->` / `<!-- ORIENT:END v=1 -->`
+- README block markers: `<!-- ORIENT-README:BEGIN v=1 -->` / `<!-- ORIENT-README:END v=1 -->`
 
-Do **not** emit `ORIENT.md` or `orient-map` unless the user explicitly asks for backward-compatibility notes.
+Do **not** emit `yourient`, `YOURIENT`, `yorient`, `YORIENT.md`, or `orient-map` as active branding.
 
 Reference: `references/rebrand-and-pointer-blocks.md` contains the exact full-rebrand checklist plus the managed README and adapter block shapes.
 
@@ -59,50 +59,50 @@ Reference: `references/rebrand-and-pointer-blocks.md` contains the exact full-re
 Default to this hierarchy:
 
 ```text
-YORIENT.md                  # canonical portable orientation map
-README.md                   # short human pointer to YORIENT.md
+ORIENT.md                  # canonical portable orientation map
+README.md                   # short human pointer to ORIENT.md
 AGENTS.md                   # generic/Codex/OpenCode/Hermes/Copilot adapter
 CLAUDE.md                   # Claude Code adapter
 GEMINI.md                   # Gemini/Antigravity adapter
 .cursor/rules/*.mdc         # only if user explicitly requests Cursor IDE rule files
-<subtree>/YORIENT.md        # optional local orientation for large subsystems
+<subtree>/ORIENT.md        # optional local orientation for large subsystems
 <subtree>/AGENTS.md         # optional local adapter when nearest-file precedence helps
 ```
 
-Use uppercase `YORIENT.md` consistently. If a project already has `ORIENT.md`, `orient.md`, or `orientation.md`, follow the migration procedure in `references/rebrand-and-pointer-blocks.md`.
+Use uppercase `ORIENT.md` consistently. If a project already has `YORIENT.md`, `yorient`, `orient.md`, or `orientation.md`, follow the migration procedure in `references/rebrand-and-pointer-blocks.md`.
 
 ## Agent Adapter Targets
 
-The cross-tool baseline is [`AGENTS.md`](https://agents.md) — an open convention adopted by OpenAI Codex, Cursor, GitHub Copilot, Gemini, Aider, Windsurf, Zed, Factory/Droid, and others. Yorient layers atop it: `YORIENT.md` holds the canonical map; `AGENTS.md` and any tool-specific adapter files (`CLAUDE.md`, `GEMINI.md`) point to that map. The skill does not replace `AGENTS.md`; it gives it something concrete to link to.
+The cross-tool baseline is [`AGENTS.md`](https://agents.md) — an open convention adopted by OpenAI Codex, Cursor, GitHub Copilot, Gemini, Aider, Windsurf, Zed, Factory/Droid, and others. Orient layers atop it: `ORIENT.md` holds the canonical map; `AGENTS.md` and any tool-specific adapter files (`CLAUDE.md`, `GEMINI.md`) point to that map. The skill does not replace `AGENTS.md`; it gives it something concrete to link to.
 
-Ask the user which agents to target if they did not specify. If they do not answer, default to portable files only: `YORIENT.md` + `README.md` + `AGENTS.md`.
+Ask the user which agents to target if they did not specify. If they do not answer, default to portable files only: `ORIENT.md` + `README.md` + `AGENTS.md`.
 
 | Target | Project file(s) | Notes |
 |---|---|---|
-| Humans / contributors | `README.md` | Add a short "read `YORIENT.md` first" pointer, not the full map. |
+| Humans / contributors | `README.md` | Add a short "read `ORIENT.md` first" pointer, not the full map. |
 | Generic / AGENTS-compatible | `AGENTS.md` | Widest portable adapter. Keep short. |
 | OpenAI Codex | `AGENTS.md` | Supports nested `AGENTS.md`; nearest file generally wins. |
-| Hermes | `AGENTS.md` | Hermes loads project context files from workdir. Keep canonical guidance in `YORIENT.md`. |
-| Claude Code | `CLAUDE.md` | Add a short orientation block pointing to `YORIENT.md`. |
-| Gemini CLI / Antigravity | `GEMINI.md` | Add a short orientation block pointing to `YORIENT.md`. |
+| Hermes | `AGENTS.md` | Hermes loads project context files from workdir. Keep canonical guidance in `ORIENT.md`. |
+| Claude Code | `CLAUDE.md` | Add a short orientation block pointing to `ORIENT.md`. |
+| Gemini CLI / Antigravity | `GEMINI.md` | Add a short orientation block pointing to `ORIENT.md`. |
 | Cursor | `AGENTS.md` | Cursor reads `AGENTS.md` from the project root. For IDE-specific rule pinning, see Cursor's `.cursor/rules/*.mdc` docs; do not invent rules files without an explicit user request. |
 | GitHub Copilot coding agent | `AGENTS.md` | Keep repo-scoped operational instructions here. |
 | OpenCode | `AGENTS.md` | Use the generic adapter unless user has a tool-specific convention. |
 | Pi | `AGENTS.md` or `CLAUDE.md` | Project context is safest. Global Pi setup requires separate confirmation. |
 | Factory/Droid | `AGENTS.md` | Use project/home `AGENTS.md`; do not invent `.droid/*`. |
-| Obsidian/vault | `YORIENT.md`, `INDEX.md`, MOC notes | Prefer existing MOC folder if present. |
+| Obsidian/vault | `ORIENT.md`, `INDEX.md`, MOC notes | Prefer existing MOC folder if present. |
 
 ### Notes on the above
 
-- **`CLAUDE.md` is a community convention, not an Anthropic-blessed schema.** Claude Code reads it as project context; it is not the same as the official `SKILL.md` skill format. Treat it as a thin adapter that points to `YORIENT.md`, not as a place for canonical guidance.
+- **`CLAUDE.md` is a community convention, not an Anthropic-blessed schema.** Claude Code reads it as project context; it is not the same as the official `SKILL.md` skill format. Treat it as a thin adapter that points to `ORIENT.md`, not as a place for canonical guidance.
 - **`GEMINI.md` global-config conflict.** Both Gemini CLI and Antigravity read from the same global `~/.gemini/GEMINI.md`. Project-level `GEMINI.md` in a repo is fine and unambiguous; just be aware that edits to the *global* file affect both tools at once.
 
-## YORIENT.md Shape
+## ORIENT.md Shape
 
-A good `YORIENT.md` is short enough to read at session start and structured enough to route work.
+A good `ORIENT.md` is short enough to read at session start and structured enough to route work.
 
 ````md
-# YORIENT.md
+# ORIENT.md
 
 ## Purpose
 1-3 sentences: what this repo/vault is.
@@ -137,31 +137,31 @@ repo/
 - Generated files, vendored code, migrations, secrets, deployment config.
 
 ## Subsystem Notes
-- Link to nested `YORIENT.md` files or MOCs.
+- Link to nested `ORIENT.md` files or MOCs.
 
 ## Maintenance
 - Update this file when directories, entrypoints, or commands change.
 - `Last reviewed: YYYY-MM-DD`
 ````
 
-For a complete worked example, see `references/example-YORIENT.md`.
+For a complete worked example, see `references/example-ORIENT.md`.
 
 ## Thin Adapter Shape
 
 Use managed blocks so existing user content survives.
 
 ```md
-<!-- YORIENT:BEGIN v=1 -->
-# Yorient Map
+<!-- ORIENT:BEGIN v=1 -->
+# Orient Map
 
-This project uses `YORIENT.md` as the canonical repo/vault map.
+This project uses `ORIENT.md` as the canonical repo/vault map.
 
 Before broad file search or structural edits:
-1. Read `YORIENT.md`.
-2. Check for a nearer nested `YORIENT.md` or `AGENTS.md` in the target subtree.
+1. Read `ORIENT.md`.
+2. Check for a nearer nested `ORIENT.md` or `AGENTS.md` in the target subtree.
 3. Use the routing map there to choose files and commands.
-4. Keep this adapter thin; update `YORIENT.md` when structure changes.
-<!-- YORIENT:END v=1 -->
+4. Keep this adapter thin; update `ORIENT.md` when structure changes.
+<!-- ORIENT:END v=1 -->
 ```
 
 Use this block shape in `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and similar adapter files.
@@ -181,13 +181,13 @@ These are the high-level rules; the exact byte-level steps live in `## Managed B
 `README.md` should stay human-friendly. Add a short pointer block, not the whole map.
 
 ```md
-<!-- YORIENT-README:BEGIN v=1 -->
+<!-- ORIENT-README:BEGIN v=1 -->
 ## Repo Map
 
-For structure, routing, and agent guidance, read [`YORIENT.md`](./YORIENT.md).
+For structure, routing, and agent guidance, read [`ORIENT.md`](./ORIENT.md).
 
-Agents and contributors should consult `YORIENT.md` before broad repo exploration or large refactors.
-<!-- YORIENT-README:END v=1 -->
+Agents and contributors should consult `ORIENT.md` before broad repo exploration or large refactors.
+<!-- ORIENT-README:END v=1 -->
 ```
 
 If the map lives outside the same directory, change the link to the correct relative path.
@@ -203,7 +203,7 @@ For each target file (e.g., `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `README.md`):
    - **Line ending:** if any line ends in `\r\n`, treat the file as CRLF; otherwise LF. Empty files default to LF. Any block content written must match the file's convention.
    - **Trailing newline:** record whether the file ends with a newline; preserve that on write.
 
-2. **Locate** all opening anchors — `<!-- YORIENT:BEGIN` for adapter files, `<!-- YORIENT-README:BEGIN` for `README.md`. For each opener, find its closing anchor (`YORIENT:END` / `YORIENT-README:END`). Capture the optional `v=N` attribute per occurrence; a missing attribute means `v=0`.
+2. **Locate** all opening anchors — `<!-- ORIENT:BEGIN` for adapter files, `<!-- ORIENT-README:BEGIN` for `README.md`. For each opener, find its closing anchor (`ORIENT:END` / `ORIENT-README:END`). Capture the optional `v=N` attribute per occurrence; a missing attribute means `v=0`.
 
 3. **Malformed input.** If any opener lacks a matching closer (or vice versa), or if openers/closers interleave across families, abort the write with a clear error and leave the file untouched. Do not attempt a guess or silent repair.
 
@@ -218,7 +218,7 @@ For each target file (e.g., `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `README.md`):
 
    - **Two or more blocks found:** keep the first; delete each subsequent `BEGIN`-through-matching-`END` range (including any blank line immediately following the removed block); then upgrade the surviving block per the single-block rule.
 
-5. **Anchor matching** is by family name only (`YORIENT` or `YORIENT-README`), case-sensitive on the family, version-agnostic. `v=0` (unversioned legacy) and `v=N` blocks are the same family and interchangeable on detection; the new block always writes at the current schema version.
+5. **Anchor matching** is by family name only (`ORIENT` or `ORIENT-README`), case-sensitive on the family, version-agnostic. Legacy `YORIENT` / `YORIENT-README` blocks count as the same family and are rewritten to `ORIENT` / `ORIENT-README` at the current schema version. `v=0` (unversioned) and `v=N` blocks are interchangeable on detection.
 
 6. **Forward-compatibility.** If a found block carries `v=M` where `M` is greater than this skill's current schema version, leave it untouched and report it — do not downgrade.
 
@@ -226,27 +226,27 @@ For each target file (e.g., `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `README.md`):
 
 8. **Idempotency check.** Re-running step 2 against the freshly written file must return exactly one block at the current schema version. If not, the write produced unexpected duplication and must be reverted.
 
-This algorithm applies symmetrically to the README pointer block, with `YORIENT-README` as the anchor family.
+This algorithm applies symmetrically to the README pointer block, with `ORIENT-README` as the anchor family.
 
 ## Relative Link Rule
 
-Always point each file to the **nearest relevant** `YORIENT.md` using a relative path from that file's location.
+Always point each file to the **nearest relevant** `ORIENT.md` using a relative path from that file's location.
 
 Examples:
-- Root `README.md` -> `./YORIENT.md`
-- `docs/README.md` -> `../YORIENT.md` or `./YORIENT.md` depending on where the map lives
-- `packages/api/AGENTS.md` -> `./YORIENT.md` if the package has its own local map
-- `packages/api/CLAUDE.md` -> `./YORIENT.md` or `../YORIENT.md` based on actual placement
+- Root `README.md` -> `./ORIENT.md`
+- `docs/README.md` -> `../ORIENT.md` or `./ORIENT.md` depending on where the map lives
+- `packages/api/AGENTS.md` -> `./ORIENT.md` if the package has its own local map
+- `packages/api/CLAUDE.md` -> `./ORIENT.md` or `../ORIENT.md` based on actual placement
 
-Do not hardcode root-level links when a nearer nested `YORIENT.md` exists.
+Do not hardcode root-level links when a nearer nested `ORIENT.md` exists.
 
 ## Commit Stance
 
-`YORIENT.md` is a committed artifact: humans read it, agents read it, and it should evolve with the repo through normal code review. Treat it like any other source-controlled doc.
+`ORIENT.md` is a committed artifact: humans read it, agents read it, and it should evolve with the repo through normal code review. Treat it like any other source-controlled doc.
 
-- **Do commit:** `YORIENT.md`, nested `<subtree>/YORIENT.md` files, managed pointer blocks in `README.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`.
-- **Do not** treat `YORIENT.md` as a generated artifact, do not auto-write it from CI, and do not add it to `.gitignore`.
-- **Do** include `YORIENT.md` and adapter file changes in the same PR as the structural change they describe, so the map never lags behind reality.
+- **Do commit:** `ORIENT.md`, nested `<subtree>/ORIENT.md` files, managed pointer blocks in `README.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`.
+- **Do not** treat `ORIENT.md` as a generated artifact, do not auto-write it from CI, and do not add it to `.gitignore`.
+- **Do** include `ORIENT.md` and adapter file changes in the same PR as the structural change they describe, so the map never lags behind reality.
 
 ## Workflow
 
@@ -255,7 +255,7 @@ Do not hardcode root-level links when a nearer nested `YORIENT.md` exists.
 Before writing anything:
 1. Identify root path and whether it is a git repo, docs tree, or vault.
 2. Ask one concise question if target agents are unknown: "Which agents should I emit adapters for?"
-3. Discover existing orientation/context files: `YORIENT.md`, `README.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules`, MOC/INDEX folders, plus any legacy `ORIENT.md` variants.
+3. Discover existing orientation/context files: `ORIENT.md`, `README.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules`, MOC/INDEX folders, plus any legacy `YORIENT.md`, `yorient`, or `orient-map` variants.
 4. Check git status when inside a git repo.
 5. Do not overwrite user-written context. Patch managed blocks or add new lean files.
 6. Exclude vendor/generated/cache directories from exploration: `.git`, `node_modules`, `.venv`, `dist`, `build`, `coverage`, `.next`, `.turbo`, `target`, `vendor`, binary assets, lockfile-only paths.
@@ -305,7 +305,7 @@ Launch read-only subagents. Each explorer gets one path/domain and returns a fix
 Explorer prompt template:
 
 ```text
-Explore this subtree for a YORIENT map. Read only enough files to answer.
+Explore this subtree for a ORIENT map. Read only enough files to answer.
 
 Root: <repo root>
 Subtree/domain: <path or domain>
@@ -320,7 +320,7 @@ Return exactly:
 - Commands/tests relevant to this area:
 - Conventions/patterns:
 - No-go/generated/risky areas:
-- Suggested YORIENT.md bullets:
+- Suggested ORIENT.md bullets:
 - Confidence and unknowns:
 
 Keep the report under 25k tokens. Do not paste large code. Do not modify files.
@@ -329,8 +329,8 @@ Keep the report under 25k tokens. Do not paste large code. Do not modify files.
 ### 5. Reduce and draft
 
 The orchestrator combines explorer reports into:
-- root `YORIENT.md`
-- optional nested `<subtree>/YORIENT.md` for large subsystems
+- root `ORIENT.md`
+- optional nested `<subtree>/ORIENT.md` for large subsystems
 - thin adapter files for selected agents
 - short `README.md` pointers for humans
 - optional MOC/index notes for vaults
@@ -345,32 +345,32 @@ Use revision gates:
 Write Markdown files directly. Do not generate them with scripts.
 
 Rules:
-- `YORIENT.md` is canonical.
+- `ORIENT.md` is canonical.
 - `README.md` gets a short pointer block.
 - `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` are thin adapters.
 - Use managed blocks in existing files (see `## Managed Block Algorithm`).
 - Preserve all content outside managed blocks.
-- Use the correct relative link/path to the applicable `YORIENT.md`.
+- Use the correct relative link/path to the applicable `ORIENT.md`.
 - If `README.md` does not exist, only create one when the user explicitly wants that.
 - If the user explicitly asks for exact target files, write only those files.
 
 ### 7. Reference propagation pass
 
-After drafting `YORIENT.md`, update surrounding files that should point to it.
+After drafting `ORIENT.md`, update surrounding files that should point to it.
 
 Minimum pass:
 1. Update or append the managed README pointer block.
 2. Update or append managed blocks in `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` when those files exist or were requested.
-3. If nested subsystem maps exist, point nested adapters to the nearest nested `YORIENT.md`, not always the root file.
+3. If nested subsystem maps exist, point nested adapters to the nearest nested `ORIENT.md`, not always the root file.
 4. Preserve all non-managed content verbatim.
 
 ### 8. Verify
 
 After writing:
 - Read each emitted file back.
-- Confirm README and adapter files point to the correct `YORIENT.md` path.
+- Confirm README and adapter files point to the correct `ORIENT.md` path.
 - Confirm existing content outside managed blocks remained intact.
-- Confirm tree paths in `YORIENT.md` exist or are marked optional/unknown.
+- Confirm tree paths in `ORIENT.md` exist or are marked optional/unknown.
 - In git repos, show `git diff --stat` and a concise changed-file list.
 
 ## Drift Check
@@ -381,34 +381,34 @@ Orientation files rot when the repo changes faster than the map. Run this drift 
 2. **Commands still parse.** For each command in the `## Commands` section, run a dry-run or `--help` form where available (e.g., `npm test --help`, `cargo test --help`). Note any command that no longer exists.
 3. **Top-level diff.** Compare the Tree Map's top-level dirs against `git ls-tree -d --name-only HEAD | head -50` (or `ls -d */`). Note any directories present on disk but absent from the map.
 4. **No-go / commands sanity.** Re-confirm the `No-Go / High-Risk Areas` section still names real paths.
-5. **Stamp.** Update or append `Last reviewed: YYYY-MM-DD` at the bottom of `YORIENT.md`.
+5. **Stamp.** Update or append `Last reviewed: YYYY-MM-DD` at the bottom of `ORIENT.md`.
 
 If drift is significant, re-run the broad scan from §2 of the workflow and let subagents refresh affected sections.
 
 ## Smoke Test
 
-After installing or updating `yorient`, confirm the skill is callable in each agent ecosystem the user targets.
+After installing or updating `orient`, confirm the skill is callable in each agent ecosystem the user targets.
 
 Universal checks:
-- `SKILL.md` frontmatter parses (one `---` opening and closing line; `name: yorient` and a `version:` are present).
+- `SKILL.md` frontmatter parses (one `---` opening and closing line; `name: orient` and a `version:` are present).
 - Skill directory contains `SKILL.md` and `references/` with at least `rebrand-and-pointer-blocks.md`.
 
 Per-agent checks:
-- **Claude Code:** `/yorient` shows up in the skill list (e.g., session skill enumeration); the description matches the current frontmatter.
-- **Hermes:** `skill_view('yorient')` returns the body.
-- **Codex:** restart Codex, then verify `yorient` appears in the skill list.
+- **Claude Code:** `/orient` shows up in the skill list (e.g., session skill enumeration); the description matches the current frontmatter.
+- **Hermes:** `skill_view('orient')` returns the body.
+- **Codex:** restart Codex, then verify `orient` appears in the skill list.
 - **Cursor CLI / Factory / Pi / OpenCode / Gemini / Antigravity:** confirm the skill enumerates in each agent's skill listing UI or command.
 
-If a check fails: verify the skill folder lives under that agent's skills directory and that the frontmatter `name:` is exactly `yorient`.
+If a check fails: verify the skill folder lives under that agent's skills directory and that the frontmatter `name:` is exactly `orient`.
 
 ## Obsidian / Vault Variant
 
-For vaults, treat `YORIENT.md` as the agent start page and MOCs as domain maps.
+For vaults, treat `ORIENT.md` as the agent start page and MOCs as domain maps.
 
 Recommended files:
 
 ```text
-YORIENT.md
+ORIENT.md
 00 - Maps of Content/
 |___README.md or INDEX.md
 |___Projects MOC.md
@@ -421,7 +421,7 @@ YORIENT.md
 
 Do not reorganize notes unless asked. Start by mapping existing folders and canonical notes. Use backlinks/search hints rather than moving files.
 
-If the vault uses Obsidian plugins such as Dataview or Templater, mention them in `YORIENT.md` so agents know they can query rather than crawl.
+If the vault uses Obsidian plugins such as Dataview or Templater, mention them in `ORIENT.md` so agents know they can query rather than crawl.
 
 ## Integration with Repo-Map Tools
 
@@ -430,20 +430,20 @@ This skill creates durable orientation docs. It does not replace structural tool
 - Aider repo-map: compact symbol/signature context during coding.
 - Repomix: whole-repo AI-friendly packed context when explicitly requested.
 - CodeGraph/MCP graph tools: live symbol/call/impact queries when already installed.
-- `YORIENT.md`: stable human+agent routing, conventions, and "where to start."
+- `ORIENT.md`: stable human+agent routing, conventions, and "where to start."
 
-If one of these tools exists in the project, mention it in `YORIENT.md` and tell agents to use it before raw search/read loops.
+If one of these tools exists in the project, mention it in `ORIENT.md` and tell agents to use it before raw search/read loops.
 
 ## Common Pitfalls
 
 1. **Creating scripts or helper programs.** This skill is Markdown-first and instructions-only unless the user explicitly asks otherwise.
-2. **Writing a giant AGENTS.md or README section.** Keep pointers thin. Put canonical routing in `YORIENT.md`.
-3. **Forgetting the README pointer.** Humans should be routed to `YORIENT.md`, not forced to discover it manually.
+2. **Writing a giant AGENTS.md or README section.** Keep pointers thin. Put canonical routing in `ORIENT.md`.
+3. **Forgetting the README pointer.** Humans should be routed to `ORIENT.md`, not forced to discover it manually.
 4. **Over-sharding.** Ten explorers for a small repo creates noise and merge work. Use fewer, better shards.
 5. **Letting subagents edit.** Explorers are read-only; only the orchestrator writes final docs.
 6. **Guessing commands.** Verify commands from manifests/configs or mark unknown.
 7. **Breaking existing context files.** Patch managed blocks; never overwrite hand-written guidance without explicit approval.
-8. **Using the wrong link path.** Compute the relative path from each adapter/README file to the right `YORIENT.md`.
+8. **Using the wrong link path.** Compute the relative path from each adapter/README file to the right `ORIENT.md`.
 9. **Creating Cursor IDE rules from imagination.** Use project `AGENTS.md` unless the user explicitly requests `.cursor/rules/*.mdc`.
 10. **Mirroring only `SKILL.md`.** If the skill gains `references/`, `templates/`, or other support files, sync those across agent mirrors too — otherwise downstream copies drift and lose helper material.
 11. **Leaving old branding behind.** Replace `ORIENT.md` and `orient-map` references when doing a full rebrand (see `references/rebrand-and-pointer-blocks.md`).
@@ -458,9 +458,9 @@ If one of these tools exists in the project, mention it in `YORIENT.md` and tell
 - [ ] Broad scan completed with normal file/search tools before fan-out.
 - [ ] Subagent shards are by coherent domain/subtree, sized to the file-count buckets in §3.
 - [ ] Explorer reports are concise (under ~25k tokens) and read-only.
-- [ ] `YORIENT.md` is lean, routing-focused, and includes an ASCII tree.
-- [ ] `README.md` contains a short pointer block to `YORIENT.md` when requested or present.
-- [ ] Adapter files are thin, use managed blocks at `v=1`, and point to the correct `YORIENT.md`.
+- [ ] `ORIENT.md` is lean, routing-focused, and includes an ASCII tree.
+- [ ] `README.md` contains a short pointer block to `ORIENT.md` when requested or present.
+- [ ] Adapter files are thin, use managed blocks at `v=1`, and point to the correct `ORIENT.md`.
 - [ ] Existing file content preserved outside managed blocks.
 - [ ] Commands and paths verified or marked unknown.
 - [ ] Final changed-file list reported.
@@ -471,5 +471,5 @@ If one of these tools exists in the project, mention it in `YORIENT.md` and tell
 If the user wants a simple command to another agent, give them this:
 
 ```text
-Create and maintain a lean, text-only YORIENT layer for this repo/vault. Use YORIENT.md as the canonical Markdown map, add or update a short README.md pointer plus thin AGENTS.md/CLAUDE.md/GEMINI.md adapters for my target agents, do one broad structural scan using normal file/search tools only, launch read-only parallel subtree explorers for major domains, synthesize their Markdown reports into concise ASCII-tree routing docs, preserve existing content with managed v=1 blocks, and do not create scripts or non-Markdown helper files.
+Create and maintain a lean, text-only ORIENT layer for this repo/vault. Use ORIENT.md as the canonical Markdown map, add or update a short README.md pointer plus thin AGENTS.md/CLAUDE.md/GEMINI.md adapters for my target agents, do one broad structural scan using normal file/search tools only, launch read-only parallel subtree explorers for major domains, synthesize their Markdown reports into concise ASCII-tree routing docs, preserve existing content with managed v=1 blocks, and do not create scripts or non-Markdown helper files.
 ```

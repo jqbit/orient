@@ -1,8 +1,8 @@
-# YORIENT.md
+# ORIENT.md
 
 ## Purpose
 
-This is the public repo for the `yorient` skill — a Markdown-only orientation
+This is the public repo for the `orient` skill — a Markdown-only orientation
 layer for AI coding agents. The repo is its own demo: it ships the skill, and
 also uses the skill on itself.
 
@@ -11,21 +11,21 @@ also uses the skill on itself.
 - Want to read the skill itself? `SKILL.md`.
 - Want to install the skill into your agents? `README.md § Install`.
 - Want to extend or modify the skill? `.github/CONTRIBUTING.md`, then `SKILL.md`.
-- Want a worked example of a `YORIENT.md`? `references/example-YORIENT.md`.
-- Want to migrate from `orient-map` or `ORIENT.md`? `references/rebrand-and-pointer-blocks.md`.
+- Want a worked example of a `ORIENT.md`? `references/example-ORIENT.md`.
+- Want to migrate from `yorient`, `YORIENT.md`, or `orient-map`? `references/rebrand-and-pointer-blocks.md`.
 - Tracking releases? `CHANGELOG.md`.
 
 ## Tree Map
 
 ```text
-yorient/
+orient/
 |___SKILL.md                                # the skill body (canonical)
 |___references/
 |   |___rebrand-and-pointer-blocks.md       # migration playbook + detection regex
-|   |___example-YORIENT.md                  # fully worked YORIENT.md (Node monorepo)
+|   |___example-ORIENT.md                  # fully worked ORIENT.md (Node monorepo)
 |   |___by-ecosystem.md                     # per-ecosystem entrypoint cheatsheet
 |___README.md                               # public-facing pitch + install
-|___YORIENT.md                              # this file — yorient applied to its own repo
+|___ORIENT.md                              # this file — orient applied to its own repo
 |___AGENTS.md                               # thin adapter (managed block)
 |___CLAUDE.md                               # thin adapter (managed block)
 |___CHANGELOG.md                            # semver release log
@@ -65,7 +65,7 @@ yorient/
 
 - Markdown only. No scripts in the skill workflow (meta scripts in `.github/workflows/` are fine).
 - `SKILL.md` and `references/*.md` are the *canonical skill*; they get mirrored into agent skill directories.
-- `README.md`, `CHANGELOG.md`, `LICENSE`, `YORIENT.md`, `AGENTS.md`, `CLAUDE.md`, `.github/`, `.gitattributes`, `.markdownlint.json` are *repo-only*; they do not sync to skill mirrors.
+- `README.md`, `CHANGELOG.md`, `LICENSE`, `ORIENT.md`, `AGENTS.md`, `CLAUDE.md`, `.github/`, `.gitattributes`, `.markdownlint.json` are *repo-only*; they do not sync to skill mirrors.
 - Versioned managed-block markers (`v=1`). Legacy `v=0` blocks are detected and upgraded; never silently rewritten with a different format.
 - Semver. `CHANGELOG.md` entry per release.
 
@@ -77,10 +77,10 @@ yorient/
 
 ## Subsystem Notes
 
-This repo is small enough that no nested `<subtree>/YORIENT.md` files are needed.
+This repo is small enough that no nested `<subtree>/ORIENT.md` files are needed.
 
 ## Maintenance
 
 Update this file when top-level files change shape (new `references/*.md`, new repo-only file, ecosystem additions to the adapter table that would change the routing map).
 
-Last reviewed: 2026-05-25.
+Last reviewed: 2026-06-05.

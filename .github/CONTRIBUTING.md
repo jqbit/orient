@@ -1,6 +1,6 @@
-# Contributing to yorient
+# Contributing to orient
 
-Thanks for your interest. `yorient` is small and focused: a Markdown-only orientation skill for AI coding agents. Most useful contributions fall into a few shapes.
+Thanks for your interest. `orient` is small and focused: a Markdown-only orientation skill for AI coding agents. Most useful contributions fall into a few shapes.
 
 ## Where to start
 
@@ -14,9 +14,9 @@ Thanks for your interest. `yorient` is small and focused: a Markdown-only orient
 The canonical files are:
 
 - `SKILL.md` — the skill body. Frontmatter `name:` and `version:` matter for ecosystem compatibility.
-- `references/` — `rebrand-and-pointer-blocks.md`, `example-YORIENT.md`, `by-ecosystem.md`. Reference material the skill body links to.
+- `references/` — `rebrand-and-pointer-blocks.md`, `example-ORIENT.md`, `by-ecosystem.md`. Reference material the skill body links to.
 - `README.md`, `CHANGELOG.md`, `LICENSE` — repo-only. Not synced to agent skill installs.
-- `YORIENT.md`, `AGENTS.md`, `CLAUDE.md` — the skill applied to its own repo (dogfood).
+- `ORIENT.md`, `AGENTS.md`, `CLAUDE.md` — the skill applied to its own repo (dogfood).
 
 ## Local checks before opening a PR
 

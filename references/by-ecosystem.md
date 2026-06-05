@@ -1,4 +1,4 @@
-# Yorient by Ecosystem
+# Orient by Ecosystem
 
 Fast cheatsheet for the broad scan in `## Workflow §2`. For each ecosystem, lists the manifest files that matter, the conventional source/test/command layout, and what "read first" usually means. Use this to seed an explorer's exploration, not to substitute for actually looking.
 
@@ -12,7 +12,7 @@ Fast cheatsheet for the broad scan in `## Workflow §2`. For each ecosystem, lis
 **Read first:** root `package.json` scripts, then workspace package manifests.
 **Commands live in:** `package.json#scripts`; monorepo task graph in `turbo.json` or `nx.json`.
 **Common no-go:** `node_modules/`, `dist/`, `build/`, `.next/`, `.turbo/`, `coverage/`, lockfiles (regenerated).
-**Frameworks worth flagging in YORIENT.md:** Next.js (`app/` vs `pages/`), Remix, Nest (modules), Expo (`apps/*/ios|android/`), Vite, Astro.
+**Frameworks worth flagging in ORIENT.md:** Next.js (`app/` vs `pages/`), Remix, Nest (modules), Expo (`apps/*/ios|android/`), Vite, Astro.
 
 ## Python
 
@@ -61,7 +61,7 @@ When a repo mixes ecosystems, look at the build orchestrator before the per-lang
 - `.bazelrc`, `tools/` — repo-wide tooling.
 - `Earthfile` (Earthly), `Dockerfile.dev` — sealed build environments.
 
-For polyglot repos, list each ecosystem's entrypoint section in `YORIENT.md` rather than burying everything under one `## Commands`.
+For polyglot repos, list each ecosystem's entrypoint section in `ORIENT.md` rather than burying everything under one `## Commands`.
 
 ## Docs sites
 
@@ -71,7 +71,7 @@ For polyglot repos, list each ecosystem's entrypoint section in `YORIENT.md` rat
 - **VitePress / Nextra:** `.vitepress/config.ts` or `theme.config.js`.
 - **Sphinx:** `conf.py`, `index.rst`, `_build/`.
 
-Note where the docs site builds in `YORIENT.md` so contributors do not edit generated HTML.
+Note where the docs site builds in `ORIENT.md` so contributors do not edit generated HTML.
 
 ## Obsidian / vault
 
@@ -79,7 +79,7 @@ Note where the docs site builds in `YORIENT.md` so contributors do not edit gene
 **Plugins worth noting:** Dataview, Templater, QuickAdd, Periodic Notes, MOCs.
 **Layout signal:** PARA folders (`01 Projects`, `02 Areas`, `03 Resources`, `04 Archive`), or `00 - Maps of Content/` for MOC-first vaults.
 **Read first:** the top-level MOC or `INDEX.md` if one exists; otherwise the highest-level folder names.
-**Commands live in:** there are none — Obsidian is read/write of files. Skip the `## Commands` section in `YORIENT.md` for vaults.
+**Commands live in:** there are none — Obsidian is read/write of files. Skip the `## Commands` section in `ORIENT.md` for vaults.
 
 ## Generic / unknown
 
@@ -89,4 +89,4 @@ If no manifest files match:
 2. Check `Makefile`, `justfile`, `Taskfile.yml`, `shell.nix`, `flake.nix`.
 3. Check `Dockerfile` for the assumed build environment.
 4. List top-level files alphabetically and flag anything ending in `.toml`, `.yaml`, `.json`, or `.lock`.
-5. Mark the ecosystem `unknown` in `YORIENT.md`; do not guess commands.
+5. Mark the ecosystem `unknown` in `ORIENT.md`; do not guess commands.

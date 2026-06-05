@@ -1,13 +1,13 @@
-# Example YORIENT.md
+# Example ORIENT.md
 
-A fully worked example of a `YORIENT.md` for a hypothetical Node/TypeScript monorepo. Use it as a calibration target for length, density, and voice.
+A fully worked example of a `ORIENT.md` for a hypothetical Node/TypeScript monorepo. Use it as a calibration target for length, density, and voice.
 
 The repo this example describes does not exist; it is a representative shape. Treat structure and tone as the lesson, not the specific names.
 
 ---
 
 ````md
-# YORIENT.md
+# ORIENT.md
 
 ## Purpose
 
@@ -91,13 +91,13 @@ acme/
 
 ## Subsystem Notes
 
-- `services/api/` has its own `YORIENT.md` covering DB schema layout and route conventions.
+- `services/api/` has its own `ORIENT.md` covering DB schema layout and route conventions.
 - `packages/ui/` has a Storybook config; component changes should land with a story update.
 
 ## Maintenance
 
 - Update this file when top-level directories, workspace globs, or root commands change.
-- Run the drift check from the `yorient` skill quarterly or after large refactors.
+- Run the drift check from the `orient` skill quarterly or after large refactors.
 
 Last reviewed: 2026-05-25.
 ````
@@ -107,7 +107,7 @@ Last reviewed: 2026-05-25.
 ## What to imitate
 
 - **Lead with Purpose, then Start Here.** Agents skim the first two sections to decide where to read next.
-- **Tree Map is approximate, not exhaustive.** Show top three levels at most; let nested `YORIENT.md` files cover deeper structure.
+- **Tree Map is approximate, not exhaustive.** Show top three levels at most; let nested `ORIENT.md` files cover deeper structure.
 - **Routing Map is the workhorse.** Five to eight rows of "if you need X, start at Y" beats any prose explanation.
 - **Commands are verified, not guessed.** If a command is unconfirmed, label it `(unverified)` or omit it.
 - **No-Go is concrete.** Name actual directories and files, not categories.
@@ -119,4 +119,4 @@ Last reviewed: 2026-05-25.
 - Architecture diagrams in ASCII — keep them in `docs/`.
 - Per-file documentation; that belongs in JSDoc/Tsdoc or `docs/`.
 - Restating things every contributor already knows about the language ("TypeScript is a superset of JavaScript").
-- Linking out to issue trackers or chat — `YORIENT.md` lives with the code, links rot.
+- Linking out to issue trackers or chat — `ORIENT.md` lives with the code, links rot.
