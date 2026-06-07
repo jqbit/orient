@@ -27,7 +27,7 @@ Scan for stale references in committed Markdown:
 ```sh
 grep -rnE '\b(orient-map|yourient|YOURIENT(\.md)?)\b' . \
   --include='*.md' \
-  --include='AGENTS.md' --include='CLAUDE.md' --include='GEMINI.md' --include='README.md' \
+  --include='AGENTS.md' --include='CLAUDE.md' --include='README.md' \
   --exclude-dir=.git --exclude-dir=node_modules
 ```
 
@@ -36,7 +36,7 @@ Find all managed blocks (any version, any whitespace, with or without `v=N`). Th
 ```sh
 grep -rnE '<!--[[:space:]]*Y?ORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)([[:space:]]+v[[:space:]]*=[[:space:]]*[0-9]+)?[[:space:]]*-->' . \
   --include='*.md' \
-  --include='AGENTS.md' --include='CLAUDE.md' --include='GEMINI.md' --include='README.md' \
+  --include='AGENTS.md' --include='CLAUDE.md' --include='README.md' \
   --exclude-dir=.git --exclude-dir=node_modules
 ```
 
@@ -56,7 +56,7 @@ To narrow to only **legacy unversioned** (`v=0`) blocks that need upgrading:
 ```sh
 grep -rnE '<!--[[:space:]]*Y?ORIENT(-README)?[[:space:]]*:[[:space:]]*(BEGIN|END)[[:space:]]*-->' . \
   --include='*.md' \
-  --include='AGENTS.md' --include='CLAUDE.md' --include='GEMINI.md' --include='README.md' \
+  --include='AGENTS.md' --include='CLAUDE.md' --include='README.md' \
   --exclude-dir=.git --exclude-dir=node_modules
 ```
 
@@ -125,7 +125,7 @@ Agents and contributors should consult `ORIENT.md` before broad repo exploration
 <!-- ORIENT-README:END v=1 -->
 ```
 
-### Agent adapter (AGENTS.md / CLAUDE.md / GEMINI.md)
+### Agent adapter (AGENTS.md / CLAUDE.md)
 
 ```md
 <!-- ORIENT:BEGIN v=1 -->
@@ -149,7 +149,7 @@ When migrating a project end-to-end:
 2. Rename on-disk skill directory to `orient` in every mirrored agent skill tree.
 3. Replace obsolete map filenames and skill-directory names with `ORIENT.md` / `orient`.
 4. Add or update the managed README pointer block at `v=1`.
-5. Add or update managed adapter blocks at `v=1` in `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` per the algorithm in `SKILL.md` (`## Managed Block Algorithm`).
+5. Add or update managed adapter blocks at `v=1` in `AGENTS.md` and `CLAUDE.md` per the algorithm in `SKILL.md` (`## Managed Block Algorithm`).
 6. Sync the whole skill package across mirrors — copy `references/`, `templates/`, and `scripts/` too when present.
 7. Preserve all non-managed file content.
 8. Remove stale mirrored `yourient` or `orient-map` directories so there is only one callable slug per ecosystem.
