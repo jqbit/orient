@@ -1,7 +1,7 @@
 ---
 name: orient
-description: "Use when creating or updating a pure-Markdown orientation layer: lean ORIENT.md maps, thin README/AGENTS.md/CLAUDE.md/GEMINI.md pointers, Obsidian MOCs, and parallel read-only subtree exploration reports. No scripts or generated code required."
-version: 1.5.0
+description: "Use when creating or updating a pure-Markdown orientation layer: lean ORIENT.md maps, thin README/AGENTS.md/CLAUDE.md pointers, Obsidian MOCs, and parallel read-only subtree exploration reports. No scripts or generated code required."
+version: 1.6.0
 author: Hermes Agent + user
 license: MIT
 metadata:
@@ -16,7 +16,7 @@ metadata:
 
 Create a lean, text-only orientation layer for a repository, documentation tree, or Obsidian-style vault so future agents do less blind discovery before they act.
 
-The canonical file is `ORIENT.md`: a compact Markdown map of where things live, what to read first, what commands matter, and what areas are risky or off-limits. Agent-facing files such as `README.md`, `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` should stay thin and point readers to `ORIENT.md`.
+The canonical file is `ORIENT.md`: a compact Markdown map of where things live, what to read first, what commands matter, and what areas are risky or off-limits. Agent-facing files such as `README.md`, `AGENTS.md`, and `CLAUDE.md` should stay thin and point readers to `ORIENT.md`.
 
 Core principle: **map first, details on demand**. Do not dump the repo into instructions. Give routing hints, entrypoints, ownership boundaries, and search/read recipes.
 
@@ -25,9 +25,9 @@ Hard constraint: **do not create scripts, Python files, generated CLIs, or non-M
 ## When to Use
 
 Use this skill when the user asks to:
-- Set up `ORIENT.md`, `README.md` map pointers, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, MOCs, repo maps, or agent-facing context files.
+- Set up `ORIENT.md`, `README.md` map pointers, `AGENTS.md`, `CLAUDE.md`, MOCs, repo maps, or agent-facing context files.
 - Reduce agent time spent exploring a large codebase or vault.
-- Create cross-agent orientation files for Claude Code, Codex, Gemini, Cursor, Hermes, OpenCode, Copilot, Pi, Factory/Droid, or generic agents.
+- Create cross-agent orientation files for Claude Code, Codex, Cursor, Gemini, Hermes, OpenCode, Copilot, Pi, Factory/Droid, or generic agents (all non-Claude agents are routed through `AGENTS.md`).
 - Build a "where to look for what" map for a monorepo, docs site, knowledge base, or Obsidian vault.
 - Parallelize repository discovery using read-only subagents and synthesize their reports.
 - Rebrand older `orient-map` or `yourient` conventions to `orient` + `ORIENT.md`.
@@ -61,10 +61,8 @@ Default to this hierarchy:
 ```text
 ORIENT.md                  # canonical portable orientation map
 README.md                   # short human pointer to ORIENT.md
-AGENTS.md                   # generic/Codex/OpenCode/Hermes/Copilot adapter
+AGENTS.md                   # generic adapter — Codex, Cursor, Gemini, Copilot, OpenCode, Hermes, ...
 CLAUDE.md                   # Claude Code adapter
-GEMINI.md                   # Gemini/Antigravity adapter
-.cursor/rules/*.mdc         # only if user explicitly requests Cursor IDE rule files
 <subtree>/ORIENT.md        # optional local orientation for large subsystems
 <subtree>/AGENTS.md         # optional local adapter when nearest-file precedence helps
 ```
@@ -73,7 +71,7 @@ Use uppercase `ORIENT.md` consistently. If a project already has `orient.md`, `o
 
 ## Agent Adapter Targets
 
-The cross-tool baseline is [`AGENTS.md`](https://agents.md) — an open convention adopted by OpenAI Codex, Cursor, GitHub Copilot, Gemini, Aider, Windsurf, Zed, Factory/Droid, and others. Orient layers atop it: `ORIENT.md` holds the canonical map; `AGENTS.md` and any tool-specific adapter files (`CLAUDE.md`, `GEMINI.md`) point to that map. The skill does not replace `AGENTS.md`; it gives it something concrete to link to.
+The cross-tool baseline is [`AGENTS.md`](https://agents.md) — an open convention adopted by OpenAI Codex, Cursor, GitHub Copilot, Gemini, Aider, Windsurf, Zed, Factory/Droid, and others. Orient layers atop it: `ORIENT.md` holds the canonical map; `AGENTS.md` and the Claude-specific `CLAUDE.md` point to that map. The skill does not replace `AGENTS.md`; it gives it something concrete to link to. By default orient emits only these two adapters — `AGENTS.md` for every non-Claude agent and `CLAUDE.md` for Claude Code — and does not create `GEMINI.md`, `.cursor/rules/*.mdc`, or other tool-specific files unless the user explicitly asks.
 
 Ask the user which agents to target if they did not specify. If they do not answer, default to portable files only: `ORIENT.md` + `README.md` + `AGENTS.md`.
 
@@ -84,8 +82,8 @@ Ask the user which agents to target if they did not specify. If they do not answ
 | OpenAI Codex | `AGENTS.md` | Supports nested `AGENTS.md`; nearest file generally wins. |
 | Hermes | `AGENTS.md` | Hermes loads project context files from workdir. Keep canonical guidance in `ORIENT.md`. |
 | Claude Code | `CLAUDE.md` | Add a short orientation block pointing to `ORIENT.md`. |
-| Gemini CLI / Antigravity | `GEMINI.md` | Add a short orientation block pointing to `ORIENT.md`. |
-| Cursor | `AGENTS.md` | Cursor reads `AGENTS.md` from the project root. For IDE-specific rule pinning, see Cursor's `.cursor/rules/*.mdc` docs; do not invent rules files without an explicit user request. |
+| Gemini CLI / Antigravity | `AGENTS.md` | Gemini adopts the `AGENTS.md` convention; point it there. Do not emit `GEMINI.md` unless the user explicitly asks. |
+| Cursor | `AGENTS.md` | Cursor reads `AGENTS.md` from the project root. |
 | GitHub Copilot coding agent | `AGENTS.md` | Keep repo-scoped operational instructions here. |
 | OpenCode | `AGENTS.md` | Use the generic adapter unless user has a tool-specific convention. |
 | Pi | `AGENTS.md` or `CLAUDE.md` | Project context is safest. Global Pi setup requires separate confirmation. |
@@ -95,7 +93,7 @@ Ask the user which agents to target if they did not specify. If they do not answ
 ### Notes on the above
 
 - **`CLAUDE.md` is a community convention, not an Anthropic-blessed schema.** Claude Code reads it as project context; it is not the same as the official `SKILL.md` skill format. Treat it as a thin adapter that points to `ORIENT.md`, not as a place for canonical guidance.
-- **`GEMINI.md` global-config conflict.** Both Gemini CLI and Antigravity read from the same global `~/.gemini/GEMINI.md`. Project-level `GEMINI.md` in a repo is fine and unambiguous; just be aware that edits to the *global* file affect both tools at once.
+- **Non-Claude agents go through `AGENTS.md`.** Codex, Cursor, Gemini/Antigravity, Copilot, OpenCode, Hermes, Pi, and Factory/Droid all read the portable `AGENTS.md`, so orient does not maintain per-tool files like `GEMINI.md`. Only add a tool-specific adapter when the user explicitly requests it.
 
 ## ORIENT.md Shape
 
@@ -164,7 +162,7 @@ Before broad file search or structural edits:
 <!-- ORIENT:END v=1 -->
 ```
 
-Use this block shape in `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, and similar adapter files.
+Use this block shape in `AGENTS.md`, `CLAUDE.md`, and similar adapter files.
 
 ### Placement Rule
 
@@ -196,7 +194,7 @@ If the map lives outside the same directory, change the link to the correct rela
 
 The exact byte-level rule for inserting, updating, and de-duplicating managed blocks. Re-running the algorithm on an unchanged file must produce a byte-identical result (idempotency).
 
-For each target file (e.g., `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `README.md`):
+For each target file (e.g., `AGENTS.md`, `CLAUDE.md`, `README.md`):
 
 1. **Preflight.** Read the file (or treat as empty if it does not exist and the user asked to create it). Before parsing, capture three byte-level properties so they can be preserved on write:
    - **BOM:** if the file starts with a UTF-8 byte-order-mark (`0xEF 0xBB 0xBF`), preserve it.
@@ -244,7 +242,7 @@ Do not hardcode root-level links when a nearer nested `ORIENT.md` exists.
 
 `ORIENT.md` is a committed artifact: humans read it, agents read it, and it should evolve with the repo through normal code review. Treat it like any other source-controlled doc.
 
-- **Do commit:** `ORIENT.md`, nested `<subtree>/ORIENT.md` files, managed pointer blocks in `README.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`.
+- **Do commit:** `ORIENT.md`, nested `<subtree>/ORIENT.md` files, managed pointer blocks in `README.md`, `AGENTS.md`, `CLAUDE.md`.
 - **Do not** treat `ORIENT.md` as a generated artifact, do not auto-write it from CI, and do not add it to `.gitignore`.
 - **Do** include `ORIENT.md` and adapter file changes in the same PR as the structural change they describe, so the map never lags behind reality.
 
@@ -255,7 +253,7 @@ Do not hardcode root-level links when a nearer nested `ORIENT.md` exists.
 Before writing anything:
 1. Identify root path and whether it is a git repo, docs tree, or vault.
 2. Ask one concise question if target agents are unknown: "Which agents should I emit adapters for?"
-3. Discover existing orientation/context files: `ORIENT.md`, `README.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules`, MOC/INDEX folders, plus any legacy `orient-map` or obsolete map-filename variants.
+3. Discover existing orientation/context files: `ORIENT.md`, `README.md`, `AGENTS.md`, `CLAUDE.md`, MOC/INDEX folders, plus any legacy `orient-map` or obsolete map-filename variants.
 4. Check git status when inside a git repo.
 5. Do not overwrite user-written context. Patch managed blocks or add new lean files.
 6. Exclude vendor/generated/cache directories from exploration: `.git`, `node_modules`, `.venv`, `dist`, `build`, `coverage`, `.next`, `.turbo`, `target`, `vendor`, binary assets, lockfile-only paths.
@@ -347,7 +345,7 @@ Write Markdown files directly. Do not generate them with scripts.
 Rules:
 - `ORIENT.md` is canonical.
 - `README.md` gets a short pointer block.
-- `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` are thin adapters.
+- `AGENTS.md` (every non-Claude agent) and `CLAUDE.md` (Claude Code) are thin adapters.
 - Use managed blocks in existing files (see `## Managed Block Algorithm`).
 - Preserve all content outside managed blocks.
 - Use the correct relative link/path to the applicable `ORIENT.md`.
@@ -360,7 +358,7 @@ After drafting `ORIENT.md`, update surrounding files that should point to it.
 
 Minimum pass:
 1. Update or append the managed README pointer block.
-2. Update or append managed blocks in `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` when those files exist or were requested.
+2. Update or append managed blocks in `AGENTS.md` and `CLAUDE.md` when those files exist or were requested.
 3. If nested subsystem maps exist, point nested adapters to the nearest nested `ORIENT.md`, not always the root file.
 4. Preserve all non-managed content verbatim.
 
@@ -444,7 +442,7 @@ If one of these tools exists in the project, mention it in `ORIENT.md` and tell 
 6. **Guessing commands.** Verify commands from manifests/configs or mark unknown.
 7. **Breaking existing context files.** Patch managed blocks; never overwrite hand-written guidance without explicit approval.
 8. **Using the wrong link path.** Compute the relative path from each adapter/README file to the right `ORIENT.md`.
-9. **Creating Cursor IDE rules from imagination.** Use project `AGENTS.md` unless the user explicitly requests `.cursor/rules/*.mdc`.
+9. **Inventing tool-specific adapter files.** Route every non-Claude agent through `AGENTS.md` and Claude Code through `CLAUDE.md`; do not create `GEMINI.md`, `.cursor/rules/*.mdc`, or other per-tool files unless the user explicitly requests them.
 10. **Mirroring only `SKILL.md`.** If the skill gains `references/`, `templates/`, or other support files, sync those across agent mirrors too — otherwise downstream copies drift and lose helper material.
 11. **Leaving old branding behind.** Replace `ORIENT.md` and `orient-map` references when doing a full rebrand (see `references/rebrand-and-pointer-blocks.md`).
 12. **Skipping the version tag.** New blocks must use `v=1`; the algorithm in `## Managed Block Algorithm` upgrades unversioned legacy blocks automatically.
@@ -471,5 +469,5 @@ If one of these tools exists in the project, mention it in `ORIENT.md` and tell 
 If the user wants a simple command to another agent, give them this:
 
 ```text
-Create and maintain a lean, text-only ORIENT layer for this repo/vault. Use ORIENT.md as the canonical Markdown map, add or update a short README.md pointer plus thin AGENTS.md/CLAUDE.md/GEMINI.md adapters for my target agents, do one broad structural scan using normal file/search tools only, launch read-only parallel subtree explorers for major domains, synthesize their Markdown reports into concise ASCII-tree routing docs, preserve existing content with managed v=1 blocks, and do not create scripts or non-Markdown helper files.
+Create and maintain a lean, text-only ORIENT layer for this repo/vault. Use ORIENT.md as the canonical Markdown map, add or update a short README.md pointer plus thin AGENTS.md (every non-Claude agent) and CLAUDE.md (Claude Code) adapters, do one broad structural scan using normal file/search tools only, launch read-only parallel subtree explorers for major domains, synthesize their Markdown reports into concise ASCII-tree routing docs, preserve existing content with managed v=1 blocks, and do not create scripts or non-Markdown helper files.
 ```

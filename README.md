@@ -6,7 +6,7 @@
 [![CHANGELOG](https://img.shields.io/badge/CHANGELOG-md-informational)](./CHANGELOG.md)
 [![Stars](https://img.shields.io/github/stars/jqbit/orient?style=social)](https://github.com/jqbit/orient/stargazers)
 
-A Markdown orientation map for AI coding agents — drop one `ORIENT.md` at the root of any repository, monorepo, docs tree, or Obsidian vault and let every agent read from the same source of truth. Thin pointer blocks in `README.md`, [`AGENTS.md`](https://agents.md), `CLAUDE.md`, and `GEMINI.md` route Claude Code, Codex, Cursor, Gemini, Copilot, and every other `AGENTS.md`-compatible agent to that map.
+A Markdown orientation map for AI coding agents — drop one `ORIENT.md` at the root of any repository, monorepo, docs tree, or Obsidian vault and let every agent read from the same source of truth. Thin pointer blocks in `README.md`, [`AGENTS.md`](https://agents.md), and `CLAUDE.md` route Claude Code, Codex, Cursor, Gemini, Copilot, and every other `AGENTS.md`-compatible agent to that map — `CLAUDE.md` for Claude Code, `AGENTS.md` for everything else.
 
 No scripts. No generated code. Just Markdown and idempotent, versioned managed blocks that survive across agent ecosystems.
 
@@ -60,8 +60,9 @@ Or, if invoking from a one-shot prompt:
 ```text
 Create and maintain a lean, text-only ORIENT layer for this repo/vault.
 Use ORIENT.md as the canonical Markdown map, add or update a short
-README.md pointer plus thin AGENTS.md/CLAUDE.md/GEMINI.md adapters for my
-target agents, do one broad structural scan using normal file/search tools
+README.md pointer plus thin AGENTS.md (every non-Claude agent) and
+CLAUDE.md (Claude Code) adapters, do one broad structural scan using
+normal file/search tools
 only, launch read-only parallel subtree explorers for major domains,
 synthesize their Markdown reports into concise ASCII-tree routing docs,
 preserve existing content with managed v=1 blocks, and do not create
@@ -75,9 +76,8 @@ For a typical repo, `orient` produces:
 ```text
 ORIENT.md                   # canonical map (purpose, tree, routing, commands, no-go, drift stamp)
 README.md                    # gains a managed ORIENT-README:BEGIN block pointing to ORIENT.md
-AGENTS.md                    # gains a managed ORIENT:BEGIN block (generic + Codex + Hermes + OpenCode + Copilot)
+AGENTS.md                    # gains a managed ORIENT:BEGIN block (every non-Claude agent — Codex, Cursor, Gemini, Copilot, OpenCode, Hermes, Pi, Factory/Droid)
 CLAUDE.md                    # gains a managed ORIENT:BEGIN block (Claude Code)
-GEMINI.md                    # gains a managed ORIENT:BEGIN block (Gemini / Antigravity)
 <subtree>/ORIENT.md         # optional nested map for large subsystems
 ```
 
@@ -102,7 +102,7 @@ Existing content in those files is preserved. New runs of `orient` only touch th
 
 ## Status
 
-`v1.5.0` — `ORIENT.md`, `ORIENT` / `ORIENT-README` managed blocks. See [`CHANGELOG.md`](./CHANGELOG.md).
+`v1.6.0` — `ORIENT.md`, `ORIENT` / `ORIENT-README` managed blocks; adapters narrowed to `AGENTS.md` + `CLAUDE.md`. See [`CHANGELOG.md`](./CHANGELOG.md).
 
 ## License
 

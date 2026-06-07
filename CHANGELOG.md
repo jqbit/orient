@@ -2,6 +2,10 @@
 
 All notable changes to `orient` are documented here. This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.6.0] — 2026-06-07
+
+Adapter targets narrowed to `AGENTS.md` and `CLAUDE.md`. Every non-Claude agent (Codex, Cursor, Gemini/Antigravity, Copilot, OpenCode, Hermes, Pi, Factory/Droid) is routed through the portable `AGENTS.md`; only Claude Code uses `CLAUDE.md`. `orient` no longer emits or manages `GEMINI.md` or `.cursor/rules/*.mdc` unless the user explicitly asks. The Agent Adapter Targets table, managed-block examples, detection-grep includes, workflow steps, pitfalls, README, and one-shot prompt are all updated to match. Managed-block schema is unchanged (`v=1`); pre-existing `GEMINI.md` blocks are left untouched rather than auto-created.
+
 ## [1.5.0] — 2026-06-05
 
 Canonical `orient` branding: `ORIENT.md`, `ORIENT` / `ORIENT-README` managed blocks, `jqbit/orient` URLs. Pre-1.5 pointer blocks and map filenames upgrade in place.
