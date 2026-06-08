@@ -1,8 +1,8 @@
 ---
 name: orient
 description: "Use when creating or updating a pure-Markdown orientation layer: lean ORIENT.md maps, thin README/AGENTS.md/CLAUDE.md pointers, Obsidian MOCs, and parallel read-only subtree exploration reports. No scripts or generated code required."
-version: 1.6.0
-author: Hermes Agent + user
+version: 1.6.1
+author: jqbit
 license: MIT
 metadata:
   hermes:
@@ -27,7 +27,7 @@ Hard constraint: **do not create scripts, Python files, generated CLIs, or non-M
 Use this skill when the user asks to:
 - Set up `ORIENT.md`, `README.md` map pointers, `AGENTS.md`, `CLAUDE.md`, MOCs, repo maps, or agent-facing context files.
 - Reduce agent time spent exploring a large codebase or vault.
-- Create cross-agent orientation files for Claude Code, Codex, Cursor, Gemini, Hermes, OpenCode, Copilot, Pi, Factory/Droid, or generic agents (all non-Claude agents are routed through `AGENTS.md`).
+- Create cross-agent orientation files for Claude Code, Codex, Cursor, Gemini, Hermes, OpenCode, Copilot, Pi, Factory/Droid, or generic agents (AGENTS-compatible non-Claude tools are routed through `AGENTS.md`).
 - Build a "where to look for what" map for a monorepo, docs site, knowledge base, or Obsidian vault.
 - Parallelize repository discovery using read-only subagents and synthesize their reports.
 - Rebrand older `orient-map` or `yourient` conventions to `orient` + `ORIENT.md`.
@@ -71,7 +71,7 @@ Use uppercase `ORIENT.md` consistently. If a project already has `orient.md`, `o
 
 ## Agent Adapter Targets
 
-The cross-tool baseline is [`AGENTS.md`](https://agents.md) — an open convention adopted by OpenAI Codex, Cursor, GitHub Copilot, Gemini, Aider, Windsurf, Zed, Factory/Droid, and others. Orient layers atop it: `ORIENT.md` holds the canonical map; `AGENTS.md` and the Claude-specific `CLAUDE.md` point to that map. The skill does not replace `AGENTS.md`; it gives it something concrete to link to. By default orient emits only these two adapters — `AGENTS.md` for every non-Claude agent and `CLAUDE.md` for Claude Code — and does not create `GEMINI.md`, `.cursor/rules/*.mdc`, or other tool-specific files unless the user explicitly asks.
+The cross-tool baseline is [`AGENTS.md`](https://agents.md) — an open convention supported by a growing set of coding agents and tools, including OpenAI Codex, Cursor, GitHub Copilot coding agent, Gemini CLI, Aider, OpenCode, Windsurf, Zed, Factory, and others. Orient layers atop it: `ORIENT.md` holds the canonical map; `AGENTS.md` and the Claude-specific `CLAUDE.md` point to that map. The skill does not replace `AGENTS.md`; it gives it something concrete to link to. By default orient emits only these two adapters — `AGENTS.md` for AGENTS-compatible tools and `CLAUDE.md` for Claude Code — and does not create `GEMINI.md`, `.cursor/rules/*.mdc`, or other tool-specific files unless the user explicitly asks.
 
 Ask the user which agents to target if they did not specify. If they do not answer, default to portable files only: `ORIENT.md` + `README.md` + `AGENTS.md`.
 
@@ -80,20 +80,20 @@ Ask the user which agents to target if they did not specify. If they do not answ
 | Humans / contributors | `README.md` | Add a short "read `ORIENT.md` first" pointer, not the full map. |
 | Generic / AGENTS-compatible | `AGENTS.md` | Widest portable adapter. Keep short. |
 | OpenAI Codex | `AGENTS.md` | Supports nested `AGENTS.md`; nearest file generally wins. |
-| Hermes | `AGENTS.md` | Hermes loads project context files from workdir. Keep canonical guidance in `ORIENT.md`. |
-| Claude Code | `CLAUDE.md` | Add a short orientation block pointing to `ORIENT.md`. |
-| Gemini CLI / Antigravity | `AGENTS.md` | Gemini adopts the `AGENTS.md` convention; point it there. Do not emit `GEMINI.md` unless the user explicitly asks. |
-| Cursor | `AGENTS.md` | Cursor reads `AGENTS.md` from the project root. |
+| Hermes | `AGENTS.md` | Use as project context when supported; keep canonical guidance in `ORIENT.md`. |
+| Claude Code | `CLAUDE.md` | Claude Code project memory. Add a short orientation block pointing to `ORIENT.md`. |
+| Gemini CLI / Antigravity | `AGENTS.md` | Gemini CLI can be configured to use `AGENTS.md`; do not emit `GEMINI.md` unless the user explicitly asks. |
+| Cursor | `AGENTS.md` | Supported by the AGENTS.md convention. Keep the adapter short. |
 | GitHub Copilot coding agent | `AGENTS.md` | Keep repo-scoped operational instructions here. |
 | OpenCode | `AGENTS.md` | Use the generic adapter unless user has a tool-specific convention. |
-| Pi | `AGENTS.md` or `CLAUDE.md` | Project context is safest. Global Pi setup requires separate confirmation. |
-| Factory/Droid | `AGENTS.md` | Use project/home `AGENTS.md`; do not invent `.droid/*`. |
+| Pi / other agents | `AGENTS.md` | Use only when that agent supports project context files; global setup requires separate confirmation. |
+| Factory/Droid | `AGENTS.md` | Factory supports `AGENTS.md`; do not invent `.droid/*`. |
 | Obsidian/vault | `ORIENT.md`, `INDEX.md`, MOC notes | Prefer existing MOC folder if present. |
 
 ### Notes on the above
 
-- **`CLAUDE.md` is a community convention, not an Anthropic-blessed schema.** Claude Code reads it as project context; it is not the same as the official `SKILL.md` skill format. Treat it as a thin adapter that points to `ORIENT.md`, not as a place for canonical guidance.
-- **Non-Claude agents go through `AGENTS.md`.** Codex, Cursor, Gemini/Antigravity, Copilot, OpenCode, Hermes, Pi, and Factory/Droid all read the portable `AGENTS.md`, so orient does not maintain per-tool files like `GEMINI.md`. Only add a tool-specific adapter when the user explicitly requests it.
+- **`CLAUDE.md` is Claude Code project memory, not a skill schema.** Treat it as a thin adapter that points to `ORIENT.md`, not as a place for canonical guidance.
+- **AGENTS-compatible tools go through `AGENTS.md`.** Codex, Cursor, Gemini CLI when configured, Copilot coding agent, OpenCode, Factory, and other compatible tools can share the portable adapter, so orient does not maintain per-tool files like `GEMINI.md`. Only add a tool-specific adapter when the user explicitly requests it or the tool's docs require it.
 
 ## ORIENT.md Shape
 
@@ -345,7 +345,7 @@ Write Markdown files directly. Do not generate them with scripts.
 Rules:
 - `ORIENT.md` is canonical.
 - `README.md` gets a short pointer block.
-- `AGENTS.md` (every non-Claude agent) and `CLAUDE.md` (Claude Code) are thin adapters.
+- `AGENTS.md` (AGENTS-compatible non-Claude tools) and `CLAUDE.md` (Claude Code) are thin adapters.
 - Use managed blocks in existing files (see `## Managed Block Algorithm`).
 - Preserve all content outside managed blocks.
 - Use the correct relative link/path to the applicable `ORIENT.md`.
@@ -395,7 +395,7 @@ Per-agent checks:
 - **Claude Code:** `/orient` shows up in the skill list (e.g., session skill enumeration); the description matches the current frontmatter.
 - **Hermes:** `skill_view('orient')` returns the body.
 - **Codex:** restart Codex, then verify `orient` appears in the skill list.
-- **Cursor CLI / Factory / Pi / OpenCode / Gemini / Antigravity:** confirm the skill enumerates in each agent's skill listing UI or command.
+- **Other agents:** confirm the skill enumerates in that agent's official skill/package UI or command. If the agent only supports project context files, run orient from a supported host and commit the generated Markdown instead.
 
 If a check fails: verify the skill folder lives under that agent's skills directory and that the frontmatter `name:` is exactly `orient`.
 
@@ -442,7 +442,7 @@ If one of these tools exists in the project, mention it in `ORIENT.md` and tell 
 6. **Guessing commands.** Verify commands from manifests/configs or mark unknown.
 7. **Breaking existing context files.** Patch managed blocks; never overwrite hand-written guidance without explicit approval.
 8. **Using the wrong link path.** Compute the relative path from each adapter/README file to the right `ORIENT.md`.
-9. **Inventing tool-specific adapter files.** Route every non-Claude agent through `AGENTS.md` and Claude Code through `CLAUDE.md`; do not create `GEMINI.md`, `.cursor/rules/*.mdc`, or other per-tool files unless the user explicitly requests them.
+9. **Inventing tool-specific adapter files.** Route AGENTS-compatible non-Claude tools through `AGENTS.md` and Claude Code through `CLAUDE.md`; do not create `GEMINI.md`, `.cursor/rules/*.mdc`, or other per-tool files unless the user explicitly requests them.
 10. **Mirroring only `SKILL.md`.** If the skill gains `references/`, `templates/`, or other support files, sync those across agent mirrors too — otherwise downstream copies drift and lose helper material.
 11. **Leaving old branding behind.** Replace `ORIENT.md` and `orient-map` references when doing a full rebrand (see `references/rebrand-and-pointer-blocks.md`).
 12. **Skipping the version tag.** New blocks must use `v=1`; the algorithm in `## Managed Block Algorithm` upgrades unversioned legacy blocks automatically.
@@ -469,5 +469,5 @@ If one of these tools exists in the project, mention it in `ORIENT.md` and tell 
 If the user wants a simple command to another agent, give them this:
 
 ```text
-Create and maintain a lean, text-only ORIENT layer for this repo/vault. Use ORIENT.md as the canonical Markdown map, add or update a short README.md pointer plus thin AGENTS.md (every non-Claude agent) and CLAUDE.md (Claude Code) adapters, do one broad structural scan using normal file/search tools only, launch read-only parallel subtree explorers for major domains, synthesize their Markdown reports into concise ASCII-tree routing docs, preserve existing content with managed v=1 blocks, and do not create scripts or non-Markdown helper files.
+Create and maintain a lean, text-only ORIENT layer for this repo/vault. Use ORIENT.md as the canonical Markdown map, add or update a short README.md pointer plus thin AGENTS.md (AGENTS-compatible agents) and CLAUDE.md (Claude Code) adapters, do one broad structural scan using normal file/search tools only, launch read-only parallel subtree explorers for major domains, synthesize their Markdown reports into concise ASCII-tree routing docs, preserve existing content with managed v=1 blocks, and do not create scripts or non-Markdown helper files.
 ```

@@ -2,6 +2,20 @@
 
 All notable changes to `orient` are documented here. This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.6.1] — 2026-06-08
+
+Patch-level accuracy and dogfood cleanup.
+
+### Changed
+
+- Tightened ecosystem wording around `AGENTS.md`, Claude Code project memory, and tools that may not expose a global skill-package directory.
+- Narrowed README install commands to supported local skill-tree examples instead of implying every `AGENTS.md`-compatible tool has a `skills/` folder.
+- Updated the dogfood `ORIENT.md` tree map, release-tag inspection command, and review stamp.
+
+### Fixed
+
+- Replaced placeholder skill author attribution with the repo owner.
+
 ## [1.6.0] — 2026-06-07
 
 Adapter targets narrowed to `AGENTS.md` and `CLAUDE.md`. Every non-Claude agent (Codex, Cursor, Gemini/Antigravity, Copilot, OpenCode, Hermes, Pi, Factory/Droid) is routed through the portable `AGENTS.md`; only Claude Code uses `CLAUDE.md`. `orient` no longer emits or manages `GEMINI.md` or `.cursor/rules/*.mdc` unless the user explicitly asks. The Agent Adapter Targets table, managed-block examples, detection-grep includes, workflow steps, pitfalls, README, and one-shot prompt are all updated to match. Managed-block schema is unchanged (`v=1`); pre-existing `GEMINI.md` blocks are left untouched rather than auto-created.

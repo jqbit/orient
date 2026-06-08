@@ -31,6 +31,7 @@ orient/
 |___CHANGELOG.md                            # semver release log
 |___LICENSE                                 # MIT
 |___.gitattributes                          # line-ending normalization
+|___.gitignore                              # local/editor ignores
 |___.markdownlint.json                      # CI lint config
 |___.github/
     |___CONTRIBUTING.md
@@ -59,13 +60,13 @@ orient/
 - Lint Markdown: `npx markdownlint-cli2 "**/*.md"`
 - Check links (lychee available locally): `lychee --offline '**/*.md'` for relative-only, or `lychee '**/*.md'` for full
 - Preview the README on GitHub: push a branch, open in browser
-- Inspect the released artifact: `gh release view v1.4.0`
+- Inspect release tags: `git tag --sort=-v:refname | head -5`
 
 ## Conventions
 
 - Markdown only. No scripts in the skill workflow (meta scripts in `.github/workflows/` are fine).
 - `SKILL.md` and `references/*.md` are the *canonical skill*; they get mirrored into agent skill directories.
-- `README.md`, `CHANGELOG.md`, `LICENSE`, `ORIENT.md`, `AGENTS.md`, `CLAUDE.md`, `.github/`, `.gitattributes`, `.markdownlint.json` are *repo-only*; they do not sync to skill mirrors.
+- `README.md`, `CHANGELOG.md`, `LICENSE`, `ORIENT.md`, `AGENTS.md`, `CLAUDE.md`, `.github/`, `.gitattributes`, `.gitignore`, `.markdownlint.json` are *repo-only*; they do not sync to skill mirrors.
 - Versioned managed-block markers (`v=1`). Legacy `v=0` blocks are detected and upgraded; never silently rewritten with a different format.
 - Semver. `CHANGELOG.md` entry per release.
 
@@ -73,7 +74,7 @@ orient/
 
 - `.git/` — never write into it.
 - `LICENSE` — do not modify without explicit permission; license changes are PR-blocking.
-- Frontmatter `name:` in `SKILL.md` — changing this changes the callable slug across every agent install. Do not rename casually.
+- Frontmatter `name:` in `SKILL.md` — changing this changes the callable slug across skill installs. Do not rename casually.
 
 ## Subsystem Notes
 
@@ -83,4 +84,4 @@ This repo is small enough that no nested `<subtree>/ORIENT.md` files are needed.
 
 Update this file when top-level files change shape (new `references/*.md`, new repo-only file, ecosystem additions to the adapter table that would change the routing map).
 
-Last reviewed: 2026-06-05.
+Last reviewed: 2026-06-08.

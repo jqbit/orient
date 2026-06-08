@@ -150,7 +150,7 @@ When migrating a project end-to-end:
 3. Replace obsolete map filenames and skill-directory names with `ORIENT.md` / `orient`.
 4. Add or update the managed README pointer block at `v=1`.
 5. Add or update managed adapter blocks at `v=1` in `AGENTS.md` and `CLAUDE.md` per the algorithm in `SKILL.md` (`## Managed Block Algorithm`).
-6. Sync the whole skill package across mirrors — copy `references/`, `templates/`, and `scripts/` too when present.
+6. Sync the whole skill package across mirrors — copy `references/`, `templates/`, and other support files too when present.
 7. Preserve all non-managed file content.
 8. Remove stale mirrored `yourient` or `orient-map` directories so there is only one callable slug per ecosystem.
 9. If the Hermes local skill had an older telemetry key (`~/.hermes/skills/.usage.json`), migrate it to `orient`.
